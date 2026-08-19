@@ -1,1 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Choices | Professionalism</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    html, body {
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+        font-family: Arial, Helvetica, sans-serif;
+        background:
+            radial-gradient(circle at top, #24485f 0%, #142b3a 40%, #09141d 100%);
+        color: #ffffff;
+    }
+
+    body {
+        min-height: 100vh;
+    }
+
+    .app {
+        width: min(920px, 94%);
+        margin: 0 auto;
+        padding: 35px 0 60px;
+    }
+
+    .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 18px;
+        color: #c8d5dd;
+        font-size: 0.92rem;
+    }
+
+    .brand {
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        color: #ffd34e;
+    }
+
+    .progress-track {
+        width: 100%;
+        height: 8px;
+        background: rgba(255,255,255,0.12);
+        border-radius: 999px;
+        overflow: hidden;
+        margin-bottom: 28px;
+    }
+
+    .progress-fill {
+        height: 100%;
+        width: 0;
+        background: #ffd34e;
+        transition: width 0.35s ease;
+    }
+
+    .card {
+        background: rgba(255,255,255,0.96);
+        color: #18232b;
+        border-radius: 18px;
+        padding: 38px;
+        box-shadow: 0 18px 55px rgba(0,0,0,0.35);
+        border-top: 7px solid #ffd34e;
+    }
+
+    .eyebrow {
+        display: inline-block;
+        font-size: 0.8rem;
+        font-weight: 800;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+        color: #2a5673;
+        margin-bottom: 12px;
+    }
+
+    h1 {
+        margin: 0 0 18px;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        line-height: 1;
+        color: #17384d;
+    }
+
+    h2 {
+        margin-top: 0;
+        color: #17384d;
+        font-size: clamp(1.7rem, 4vw, 2.5rem);
+    }
+
+    h3 {
+        color: #17384d;
+        margin-bottom: 8px;
+    }
+
+    p {
+        font-size: 1.08rem;
+        line-height: 1.65;
+    }
+
+    .lead {
+        font-size: 1.22rem;
+    }
+
+    .highlight {
+        background: #eef4f7;
+        border-left: 5px solid #2a5673;
+        border-radius: 8px;
+        padding: 18px 20px;
+        margin: 22px 0;
+    }
+
+    .quote {
+        background: #f7f3df;
+        border-left: 5px solid #d5a900;
+        padding: 17px 20px;
+        border-radius: 8px;
+        font-weight: 700;
+        margin: 20px 0;
+    }
+
+    .time-pill {
+        display: inline-block;
+        padding: 8px 14px;
+        background: #17384d;
+        color: white;
+        border-radius: 999px;
+        font-weight: 800;
+        margin-bottom: 15px;
+    }
+
+    .choices {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        margin-top: 30px;
+    }
+
+    .choice {
+        border: 2px solid #ccd8df;
+        background: #f8fafb;
+        border-radius: 14px;
+        padding: 22px;
+        text-align: left;
+        cursor: pointer;
+        transition: 0.18s ease;
+        min-height: 175px;
+        color: #17232b;
+    }
+
+    .choice:hover {
+        transform: translateY(-3px);
+        border-color: #2a5673;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    }
+
+    .choice strong {
+        display: block;
+        color: #17384d;
+        font-size: 1.12rem;
+        margin-bottom: 9px;
+    }
+
+    .choice-letter {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: #ffd34e;
+        color: #17232b;
+        font-weight: 900;
+        margin-bottom: 12px;
+    }
+
+    button.primary {
+        border: none;
+        background: #ffd34e;
+        color: #17232b;
+        padding: 15px 25px;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 900;
+        cursor: pointer;
+        transition: 0.18s ease;
+    }
+
+    button.primary:hover {
+        transform: translateY(-2px);
+        background: #ffe073;
+    }
+
+    button.secondary {
+        border: 2px solid #2a5673;
+        background: transparent;
+        color: #17384d;
+        padding: 13px 23px;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 800;
+        cursor: pointer;
+    }
+
+    .consequence {
+        border-left: 6px solid #d5a900;
+    }
+
+    .review-card {
+        border-top-color: #2a5673;
+    }
+
+    .review-result {
+        font-size: 1.35rem;
+        font-weight: 900;
+        color: #17384d;
+        margin: 20px 0;
+    }
+
+    .final-message {
+        text-align: center;
+        padding-top: 10px;
+    }
+
+    .final-message h2 {
+        font-size: clamp(2rem, 5vw, 3.2rem);
+    }
+
+    .small {
+        font-size: 0.92rem;
+        color: #53636d;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .section-break {
+        text-align: center;
+        color: #ffffff;
+        padding: 70px 15px;
+    }
+
+    .section-break h1 {
+        color: #ffd34e;
+    }
+
+    .section-break p {
+        color: #dce6ec;
+        max-width: 650px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    @media (max-width: 700px) {
+        .app {
+            width: 95%;
+            padding-top: 18px;
+        }
+
+        .card {
+            padding: 25px 20px;
+        }
+
+        .choices {
+            grid-template-columns: 1fr;
+        }
+
+        .choice {
+            min-height: auto;
+        }
+
+        .topbar {
+            font-size: 0.8rem;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <div class="topbar">
+        <div class="brand">CHOICES</div>
+        <div id="statusText"></div>
+    </div>
+
+    <div class="progress-track" id="progressTrack">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <main id="screen"></main>
+
+</div>
+
+<script>
+
+const scenarios = [
+
+{
+    title: "Clocking In",
+    time: "7:56 AM",
+    text: `
+        <p>Your shift starts at <strong>8:00 AM</strong>.</p>
+
+        <p>You arrive at the shop, walk inside, and see several technicians already getting ready for the day.</p>
+
+        <p>Your toolbox is across the shop, and you still need to put your belongings away and get yourself ready to work.</p>
+
+        <p>The time clock is right by the entrance.</p>
+    `,
+    choices: [
+        {
+            title: "Clock in now.",
+            text: "You're here before 8:00. After clocking in, you'll put your stuff away and get ready for work.",
+            professional: false
+        },
+        {
+            title: "Get ready first.",
+            text: "Put your belongings away, get yourself completely ready to work, then clock in.",
+            professional: true
+        }
+    ]
+},
+
+{
+    title: "Customer Property",
+    time: "8:20 AM",
+    text: `
+        <p>You just helped another technician remove a CV axle and have a <strong>small amount of grease on your hands</strong>.</p>
+
+        <p>The service writer approaches you with an RO for a vehicle that needs a road test.</p>
+
+        <div class="highlight">
+            <strong>The customer is waiting and is in a hurry to leave.</strong>
+        </div>
+    `,
+    choices: [
+        {
+            title: "Road test it immediately.",
+            text: "It's only a little grease. You'll be careful not to touch anything you don't need to.",
+            professional: false
+        },
+        {
+            title: "Clean your hands first.",
+            text: "The customer may wait another minute, but you'll make sure you don't get grease inside their vehicle.",
+            professional: true
+        }
+    ]
+},
+
+{
+    title: "Protect Your Hearing or Keep Moving?",
+    time: "8:45 AM",
+    text: `
+        <p>The customer you're working for is waiting, and the <strong>promise time on the RO is 9:00 AM</strong>.</p>
+
+        <p>You still have about <strong>20 minutes of work left</strong>.</p>
+
+        <p>The technician in the bay next to you starts using an <strong>air hammer</strong>. It's loud enough that you're having trouble hearing your Spotify playlist through your computer speakers.</p>
+
+        <p>You don't have earplugs at your toolbox. To get proper hearing protection, you'll need to stop working and go to the <strong>parts department</strong> to get a pair.</p>
+    `,
+    choices: [
+        {
+            title: "Put in your AirPods and keep working.",
+            text: "They're right there, they'll help block out the noise, and you won't lose any more time on an already late job.",
+            professional: false
+        },
+        {
+            title: "Go get earplugs.",
+            text: "You'll lose a few more minutes, but you'll have proper hearing protection before continuing the job.",
+            professional: true
+        }
+    ]
+},
+
+{
+    title: "Did I Tighten That?",
+    time: "10:05 AM",
+    text: `
+        <p>You just finished a repair that required removing one of the wheels.</p>
+
+        <p>The vehicle is back on the ground and you've completed the road test.</p>
+
+        <p>As you're finishing the RO, a thought crosses your mind:</p>
+
+        <div class="quote">
+            “I don't remember torquing that wheel.”
+        </div>
+
+        <p>You might have done it. It's been a busy morning and you've performed this repair many times before.</p>
+
+        <p>Checking it means pulling the vehicle back into your bay and taking additional time.</p>
+    `,
+    choices: [
+        {
+            title: "Turn in the RO.",
+            text: "You're probably overthinking it. The road test felt normal, and you most likely tightened it.",
+            professional: false
+        },
+        {
+            title: "Bring it back in and check.",
+            text: "If you can't confidently say the wheel was torqued, verify it before releasing the vehicle.",
+            professional: true
+        }
+    ]
+},
+
+{
+    title: "Nobody Told You To",
+    time: "10:50 AM",
+    text: `
+        <p>You finish your current repair and turn in the RO.</p>
+
+        <p>Your next assigned vehicle <strong>hasn't arrived yet</strong>.</p>
+
+        <p>Your bay could use some cleanup, there are tools that need to be put away, and the technician next to you is still working on a larger job.</p>
+
+        <p>Nobody has asked you to do anything.</p>
+    `,
+    choices: [
+        {
+            title: "Wait for your next assignment.",
+            text: "Stay near your toolbox and check your phone. You're caught up, and your next vehicle should arrive soon.",
+            professional: false
+        },
+        {
+            title: "Find something productive to do.",
+            text: "Clean your bay, put tools away, or ask another technician if they need a hand.",
+            professional: true
+        }
+    ]
+},
+
+{
+    title: "The Comeback",
+    time: "11:20 AM",
+    text: `
+        <p>A vehicle you recently serviced returns to the shop with the <strong>Check Engine Light on</strong>.</p>
+
+        <p>You scan it and find a stored DTC for <strong>Mass Air Flow Circuit / Performance</strong>.</p>
+
+        <p>You pop the hood and immediately see the problem.</p>
+
+        <p>When you replaced the engine air filter during its previous service, you accidentally left a <strong>hose to the airbox disconnected</strong>.</p>
+
+        <p>You know exactly what caused the light.</p>
+    `,
+    choices: [
+        {
+            title: "Own the mistake.",
+            text: "Reconnect the hose and tell the service advisor and manager what happened. The customer won't be charged.",
+            professional: true
+        },
+        {
+            title: "Recommend a throttle body service.",
+            text: "Reconnect the hose and recommend an easy-to-sell throttle body service. The customer may never know, and you could use the hours.",
+            professional: false
+        }
+    ]
+},
+
+{
+    title: "Lunch",
+    time: "12:28 PM",
+    text: `
+        <p>You clocked out for your scheduled <strong>30-minute lunch at 12:00 PM</strong>.</p>
+
+        <p>You're out with a few coworkers and nobody has been paying much attention to the time.</p>
+
+        <p>You look at your phone.</p>
+
+        <div class="highlight">
+            <strong>It's 12:28 PM.</strong>
+        </div>
+
+        <p>You're still a few minutes away from the shop, so there's no way you'll be back and ready to work by 12:30.</p>
+    `,
+    choices: [
+        {
+            title: "Finish up and head back.",
+            text: "You're only going to be a few minutes late. You've worked hard all morning, and a couple extra minutes isn't a big deal.",
+            professional: false
+        },
+        {
+            title: "Leave now.",
+            text: "Cut the conversation short and head back to the shop as quickly as possible.",
+            professional: true
+        }
+    ]
+},
+
+{
+    title: "Where's My Tool?",
+    time: "1:15 PM",
+    text: `
+        <p>You go to grab your <strong>10mm socket</strong> and it's missing.</p>
+
+        <p>After looking around, you spot it on the cart of the technician in the bay next to you.</p>
+
+        <p>This isn't the first time they've borrowed one of your tools without asking.</p>
+
+        <p>When you say something, they respond:</p>
+
+        <div class="quote">
+            “Relax. I was going to put it back. It's just a socket.”
+        </div>
+
+        <p>You've talked to them about this before.</p>
+    `,
+    choices: [
+        {
+            title: "Call them out.",
+            text: "Tell them you're tired of them taking your stuff and that if they need tools, they should buy their own.",
+            professional: false
+        },
+        {
+            title: "Keep your cool.",
+            text: "Tell them clearly that borrowing your tools without permission isn't acceptable. Take your socket and return to work.",
+            professional: true
+        }
+    ]
+},
+
+{
+    title: "Receiving Criticism",
+    time: "2:00 PM",
+    text: `
+        <p>Your manager calls you over to discuss a vehicle you worked on earlier in the week.</p>
+
+        <p>The customer returned because a plastic splash shield underneath the vehicle came loose.</p>
+
+        <div class="quote">
+            “You need to slow down and pay more attention when you're putting vehicles back together. This can't keep happening.”
+        </div>
+
+        <p>You remember the vehicle, and you're pretty sure several of the clips were already damaged when it came in.</p>
+
+        <p>Another technician is standing nearby and can hear the conversation.</p>
+    `,
+    choices: [
+        {
+            title: "Defend yourself.",
+            text: "Tell your manager the clips were already damaged and it's unfair to blame you for something you didn't cause.",
+            professional: false
+        },
+        {
+            title: "Hear them out, then explain.",
+            text: "Let your manager finish. Explain what you observed and acknowledge that you should have documented the damaged clips.",
+            professional: true
+        }
+    ]
+},
+
+{
+    title: "But They Already Diagnosed It",
+    time: "2:40 PM",
+    text: `
+        <p>The service advisor brings a customer into the shop who wants to speak directly with you.</p>
+
+        <p>Before coming in, the customer stopped at a parts store because their <strong>Check Engine Light</strong> was on. The store scanned the vehicle and gave them a trouble-code printout.</p>
+
+        <div class="quote">
+            “They already diagnosed it for free. They said this code could just mean it needs this part. Why am I paying you diagnostic time to tell me the same thing?”
+        </div>
+
+        <p>You've already tested the vehicle using service information, equipment, and your knowledge of the system to determine the actual cause.</p>
+
+        <div class="quote">
+            “How do I know what you're recommending is actually going to fix my car?”
+        </div>
+    `,
+    choices: [
+        {
+            title: "Defend your diagnosis.",
+            text: "Tell them reading a code isn't diagnosis. If they'd rather trust the free parts-store scan, they're welcome to have the repair done there.",
+            professional: false
+        },
+        {
+            title: "Explain the value of your diagnosis.",
+            text: "Explain what the code means, what testing you performed, what the results showed, and why those results led to your recommendation.",
+            professional: true
+        }
+    ]
+},
+
+{
+    title: "Wrong Part",
+    time: "3:40 PM",
+    text: `
+        <p>You're trying to finish one of your last jobs of the day.</p>
+
+        <p>You've removed the failed component and go to install the replacement.</p>
+
+        <div class="highlight">
+            <strong>It's the wrong part.</strong>
+        </div>
+
+        <p>You double-check the RO and vehicle information. You requested the correct component—the parts department ordered the wrong one.</p>
+
+        <p>The parts employee checks the computer.</p>
+
+        <div class="quote">
+            “Yeah... that's my fault. I must've clicked the wrong one. I can get the right one here, but it'll probably take about an hour.”
+        </div>
+
+        <p>The vehicle is apart in your bay, and someone else's mistake is costing you productive time.</p>
+    `,
+    choices: [
+        {
+            title: "Let them know you're pissed.",
+            text: "Tell them they need to pay more attention. Their mistake is costing you time and may keep you here late.",
+            professional: false
+        },
+        {
+            title: "Focus on solving the problem.",
+            text: "Ask them to order the correct part, update the service advisor, and find something productive to do while you wait.",
+            professional: true
+        }
+    ]
+},
+
+{
+    title: "One More Job",
+    time: "4:55 PM",
+    text: `
+        <p>The correct part finally arrived around <strong>4:40 PM</strong>. You finished the job, completed your checks, and wrapped everything up.</p>
+
+        <p>Your shift ends at <strong>5:00 PM</strong>.</p>
+
+        <p>You have a <strong>date at 5:30</strong>. If you leave on time, you'll have just enough time to get there.</p>
+
+        <p>As you're putting your tools away, the service advisor approaches with an RO.</p>
+
+        <div class="quote">
+            “I know you're about to leave, but I've got a customer out front with a dead battery. They're stranded. Any chance you can knock this out before you go?”
+        </div>
+
+        <p>The job will probably take another <strong>20–30 minutes</strong>.</p>
+    `,
+    choices: [
+        {
+            title: "Leave at 5:00.",
+            text: "Tell the advisor you already have plans and can't stay. Your scheduled shift is over.",
+            professional: true,
+            exceptional: false
+        },
+        {
+            title: "Take the job.",
+            text: "Let your date know you're going to be late. Stay and get the stranded customer back on the road.",
+            professional: true,
+            exceptional: true
+        }
+    ]
+}
+
+];
+
+const consequences = [
+
+{
+    bad: `
+        <h2>Payroll Review</h2>
+        <p>Your manager reviews your timecard and notices you've been clocking in before you're actually ready to work.</p>
+        <p>From the company's perspective, you're being paid while you're still putting away your belongings and preparing for the shift.</p>
+        <p><strong>You receive a warning about your timekeeping.</strong></p>
+    `,
+    good: `
+        <h2>Payroll Review</h2>
+        <p>Your timecard is reviewed.</p>
+        <p>Your clock-in times accurately reflect when you were ready to begin work.</p>
+        <p><strong>Nothing happens—which is exactly what should happen.</strong></p>
+    `
+},
+
+{
+    bad: `
+        <h2>The Customer Calls</h2>
+        <p>The customer contacts the shop after finding grease smudges on the steering wheel and inside their vehicle.</p>
+        <p>They paid to have the interior cleaned and expect the shop to reimburse them.</p>
+        <p>The customer is angry that their vehicle was returned in worse condition than when they brought it in.</p>
+    `,
+    good: `
+        <h2>The Customer Leaves</h2>
+        <p>The road test is completed and the customer leaves with a clean vehicle.</p>
+        <p>The extra minute you spent washing your hands prevented an unnecessary customer complaint.</p>
+    `
+},
+
+{
+    bad: `
+        <h2>The Manager Walks Through</h2>
+        <p>Your manager walks through the shop while the air hammer is operating.</p>
+        <p>They notice you're working with AirPods in instead of proper hearing protection.</p>
+        <p>They stop you and address why headphones are not a substitute for required PPE.</p>
+    `,
+    good: `
+        <h2>The Manager Walks Through</h2>
+        <p>Your manager passes through the same area while the air hammer is operating.</p>
+        <p>They see you're wearing proper hearing protection.</p>
+        <p><strong>They keep walking.</strong></p>
+    `
+},
+
+{
+    bad: `
+        <h2>A Few Days Later...</h2>
+        <p>The customer notices a noise from the wheel and takes the vehicle to another repair shop.</p>
+        <p>The other shop discovers that the wheel was left loose.</p>
+        <p><strong>Fortunately, nobody was injured.</strong></p>
+        <p>The customer is furious, leaves a negative review, and says they will never return for service.</p>
+        <p>Your manager pulls the original RO.</p>
+        <p><strong>Your technician number is on it.</strong></p>
+    `,
+    good: `
+        <h2>You Check the Vehicle</h2>
+        <p>You bring the vehicle back into your bay and check the wheel.</p>
+        <p>It was never properly torqued.</p>
+        <p>You correct the problem before the vehicle is released.</p>
+        <p>Nobody ever knows how close you came to making a serious mistake.</p>
+        <p><strong>Except you.</strong></p>
+    `
+},
+
+{
+    bad: `
+        <h2>Someone Was Watching</h2>
+        <p>Your manager walks through while you're standing at your toolbox looking at your phone.</p>
+        <p>They don't say anything.</p>
+        <p>Later, during your performance review, they mention that when you're given work you do it—but when nobody tells you what to do, you tend to stop.</p>
+    `,
+    good: `
+        <h2>Someone Was Watching</h2>
+        <p>Your manager notices you cleaning your bay and helping another technician while waiting for your next assignment.</p>
+        <p>They don't say anything at the time.</p>
+        <p>But they remember it.</p>
+    `
+},
+
+{
+    bad: `
+        <h2>The Comeback Gets Worse</h2>
+        <p>The customer eventually questions why a throttle-body service was recommended immediately after an air-filter replacement caused their Check Engine Light.</p>
+        <p>What began as an honest mistake now looks like the shop sold them something they didn't need to cover it up.</p>
+        <p>Your manager pulls both repair orders.</p>
+        <p>Your technician number appears on both.</p>
+        <p><strong>You're no longer discussing a disconnected hose. You're discussing your integrity.</strong></p>
+    `,
+    good: `
+        <h2>You Own the Mistake</h2>
+        <p>The service advisor explains what happened. The hose is reconnected at no charge.</p>
+        <p>The customer isn't thrilled that the mistake happened, but appreciates that the shop admitted it and corrected it.</p>
+        <p>Your manager reminds you to be more careful.</p>
+        <p><strong>And that's where the problem ends.</strong></p>
+    `
+},
+
+{
+    bad: `
+        <h2>Another Timekeeping Issue</h2>
+        <p>Your manager notices that you returned late from lunch.</p>
+        <p>They remind you that a 30-minute lunch means you're expected to be back and ready to work at the end of those 30 minutes.</p>
+    `,
+    good: `
+        <h2>Back From Lunch</h2>
+        <p>You return and are ready to work when lunch ends.</p>
+        <p>No one needs to come looking for you.</p>
+        <p><strong>Nothing happens.</strong></p>
+    `
+},
+
+{
+    bad: `
+        <h2>The Argument Gets Reported</h2>
+        <p>Your manager agrees that another technician should not be taking your tools without permission.</p>
+        <p>Then they tell you:</p>
+        <div class="quote">“But that's not what we're talking about right now. We're talking about how you handled it.”</div>
+        <p>You were right about the original problem.</p>
+        <p><strong>You created another problem with the way you handled it.</strong></p>
+    `,
+    good: `
+        <h2>The Next Time...</h2>
+        <p>The technician walks over to your toolbox.</p>
+        <div class="quote">“Hey, can I borrow your 10mm?”</div>
+        <p>The problem was addressed without turning it into a bigger conflict.</p>
+    `
+},
+
+{
+    bad: `
+        <h2>The RO Gets Reviewed</h2>
+        <p>Your manager checks the original repair order.</p>
+        <p>There's nothing documenting damaged splash-shield clips and no note showing that you mentioned them to the service advisor.</p>
+        <p>You remember seeing the damage.</p>
+        <p><strong>The paperwork doesn't.</strong></p>
+        <p>And now your manager also remembers the argument.</p>
+    `,
+    good: `
+        <h2>The Vehicle Gets Checked</h2>
+        <p>Your manager inspects the vehicle and agrees that several clips appear old and damaged.</p>
+        <p>They remind you:</p>
+        <div class="quote">“Next time, document it before the vehicle leaves.”</div>
+        <p>The conversation ends there.</p>
+    `
+},
+
+{
+    bad: `
+        <h2>The Repair Was Correct</h2>
+        <p>Your diagnosis was right. The repair fixes the vehicle.</p>
+        <p>That evening, the customer leaves an online review.</p>
+        <p>They don't complain about the repair.</p>
+        <p>They complain that the technician they spoke with was <strong>condescending and dismissive</strong> when they questioned the diagnosis.</p>
+        <p>Your technical diagnosis was correct.</p>
+        <p><strong>Your customer interaction wasn't.</strong></p>
+    `,
+    good: `
+        <h2>The Customer Understands</h2>
+        <p>The customer approves the repair.</p>
+        <p>When they pick up the vehicle, they tell the service advisor they appreciated having the testing explained to them.</p>
+        <p><strong>You didn't just diagnose the vehicle. You demonstrated the value of your diagnosis.</strong></p>
+    `
+},
+
+{
+    bad: `
+        <h2>Management Gets Involved</h2>
+        <p>Your manager approaches you later in the day.</p>
+        <p>They already know the parts department ordered the wrong component.</p>
+        <p><strong>That's not what they want to discuss.</strong></p>
+        <p>They want to discuss how you spoke to another employee after that employee admitted making a mistake.</p>
+    `,
+    good: `
+        <h2>The Correct Part Arrives</h2>
+        <p>The parts employee brings the correct component directly to your bay and apologizes again.</p>
+        <p>You finish the repair.</p>
+        <p>Neither of you needed management involved.</p>
+        <p><strong>The problem stayed a parts problem instead of becoming a people problem.</strong></p>
+    `
+},
+
+{
+    normal: `
+        <h2>Your Shift Ends</h2>
+        <p>You leave at your scheduled time and make your date.</p>
+        <p>The battery job is handled by someone else or the following morning.</p>
+        <p><strong>Your shift was over. You were not obligated to stay.</strong></p>
+    `,
+    exceptional: `
+        <h2>You Stay</h2>
+        <p>You text your date that you're going to be late and replace the battery.</p>
+        <p>The stranded customer gets back on the road.</p>
+        <p>The next morning, your manager approaches you.</p>
+        <div class="quote">
+            “I heard you stayed to take care of that battery last night. You didn't have to do that.”
+            <br><br>
+            “I noticed that you did.”
+        </div>
+    `
+}
+
+];
+
+let currentScenario = 0;
+let consequenceIndex = 0;
+let answers = [];
+
+const screen = document.getElementById("screen");
+const statusText = document.getElementById("statusText");
+const progressFill = document.getElementById("progressFill");
+const progressTrack = document.getElementById("progressTrack");
+
+function setProgress(percent) {
+    progressFill.style.width = percent + "%";
+}
+
+function showIntro() {
+
+    statusText.textContent = "30-Day Probation";
+    setProgress(0);
+
+    screen.innerHTML = `
+        <section class="card">
+
+            <span class="eyebrow">Professionalism Simulation</span>
+
+            <h1>CHOICES</h1>
+
+            <p class="lead"><strong>Every choice has a consequence.</strong></p>
+
+            <p>
+                You're an entry-level automotive technician currently in the
+                <strong>third week of your 30-day probationary period</strong>.
+            </p>
+
+            <p>
+                You've had enough time to learn how the shop operates, meet your coworkers,
+                and begin working independently.
+            </p>
+
+            <div class="highlight">
+                At the end of your probationary period, management will decide whether
+                to offer you a <strong>permanent position</strong>.
+            </div>
+
+            <p>
+                Your technical ability matters—but that's not the only thing they're evaluating.
+            </p>
+
+            <p>
+                Your reliability, judgment, safety, communication, attitude, integrity,
+                and professionalism matter too.
+            </p>
+
+            <p>
+                Today is another normal day at the shop.
+            </p>
+
+            <p><strong>The choices you make are yours.</strong></p>
+
+            <br>
+
+            <button class="primary" onclick="startSimulation()">
+                START YOUR SHIFT →
+            </button>
+
+        </section>
+    `;
+}
+
+function startSimulation() {
+    currentScenario = 0;
+    answers = [];
+    showScenario();
+}
+
+function showScenario() {
+
+    const s = scenarios[currentScenario];
+
+    statusText.textContent =
+        `Scenario ${currentScenario + 1} of ${scenarios.length}`;
+
+    setProgress(((currentScenario) / scenarios.length) * 70);
+
+    screen.innerHTML = `
+        <section class="card">
+
+            <span class="eyebrow">
+                Scenario ${currentScenario + 1} of ${scenarios.length}
+            </span>
+
+            <div class="time-pill">${s.time}</div>
+
+            <h2>${s.title}</h2>
+
+            ${s.text}
+
+            <div class="choices">
+
+                <button class="choice" onclick="choose(0)">
+                    <span class="choice-letter">A</span>
+                    <strong>${s.choices[0].title}</strong>
+                    ${s.choices[0].text}
+                </button>
+
+                <button class="choice" onclick="choose(1)">
+                    <span class="choice-letter">B</span>
+                    <strong>${s.choices[1].title}</strong>
+                    ${s.choices[1].text}
+                </button>
+
+            </div>
+
+        </section>
+    `;
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function choose(choiceIndex) {
+
+    answers.push(choiceIndex);
+
+    currentScenario++;
+
+    if (currentScenario < scenarios.length) {
+        showScenario();
+    } else {
+        showConsequenceIntro();
+    }
+}
+
+function showConsequenceIntro() {
+
+    statusText.textContent = "Your Shift Is Over";
+    setProgress(72);
+
+    screen.innerHTML = `
+        <section class="section-break">
+
+            <span class="eyebrow" style="color:#ffd34e;">
+                End of Shift
+            </span>
+
+            <h1>THE CONSEQUENCES</h1>
+
+            <p>
+                Throughout the day, you made decisions without knowing exactly
+                how they would turn out.
+            </p>
+
+            <p>
+                Some consequences were immediate.
+                Others took time to appear.
+            </p>
+
+            <p><strong>Now you get to see what your choices created.</strong></p>
+
+            <br>
+
+            <button class="primary" onclick="startConsequences()">
+                SEE WHAT HAPPENED →
+            </button>
+
+        </section>
+    `;
+}
+
+function startConsequences() {
+    consequenceIndex = 0;
+    showConsequence();
+}
+
+function showConsequence() {
+
+    const answer = answers[consequenceIndex];
+    const scenario = scenarios[consequenceIndex];
+    const result = consequences[consequenceIndex];
+
+    let content;
+
+    if (consequenceIndex === 11) {
+        content = answer === 1 ? result.exceptional : result.normal;
+    } else {
+        const selectedChoice = scenario.choices[answer];
+        content = selectedChoice.professional ? result.good : result.bad;
+    }
+
+    statusText.textContent =
+        `Consequence ${consequenceIndex + 1} of ${consequences.length}`;
+
+    setProgress(72 + ((consequenceIndex + 1) / consequences.length) * 18);
+
+    screen.innerHTML = `
+        <section class="card consequence">
+
+            <span class="eyebrow">
+                Your Choice — Scenario ${consequenceIndex + 1}
+            </span>
+
+            ${content}
+
+            <br>
+
+            <button class="primary" onclick="nextConsequence()">
+                ${consequenceIndex === consequences.length - 1
+                    ? "CONTINUE →"
+                    : "NEXT CONSEQUENCE →"}
+            </button>
+
+        </section>
+    `;
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function nextConsequence() {
+
+    consequenceIndex++;
+
+    if (consequenceIndex < consequences.length) {
+        showConsequence();
+    } else {
+        showReviewIntro();
+    }
+}
+
+function showReviewIntro() {
+
+    statusText.textContent = "30-Day Review";
+    setProgress(94);
+
+    screen.innerHTML = `
+        <section class="section-break">
+
+            <span class="eyebrow" style="color:#ffd34e;">
+                One Week Later
+            </span>
+
+            <h1>YOUR 30-DAY REVIEW</h1>
+
+            <p>
+                Your probationary period is over.
+            </p>
+
+            <p>
+                Your manager calls you into the office.
+            </p>
+
+            <p>
+                They're ready to make a decision about your future with the shop.
+            </p>
+
+            <br>
+
+            <button class="primary" onclick="showReview()">
+                ENTER THE OFFICE →
+            </button>
+
+        </section>
+    `;
+}
+
+function showReview() {
+
+    let professionalCount = 0;
+
+    for (let i = 0; i < scenarios.length; i++) {
+
+        const selected =
+            scenarios[i].choices[answers[i]];
+
+        if (selected.professional) {
+            professionalCount++;
+        }
+    }
+
+    const integrityFailure =
+        answers[5] === 1;
+
+    const wheelFailure =
+        answers[3] === 0;
+
+    const perfectProfessional =
+        professionalCount === 12;
+
+    const exceptional =
+        answers[11] === 1;
+
+    let title;
+    let body;
+
+    if (perfectProfessional && exceptional) {
+
+        title = "POSITION OFFERED — OUTSTANDING REVIEW";
+
+        body = `
+            <p>Your manager looks over your evaluation.</p>
+
+            <div class="quote">
+                “You've made a strong impression around here.”
+            </div>
+
+            <p>
+                Your technical skills are developing exactly as expected for a new technician,
+                but what has stood out most is <strong>how you approach the job</strong>.
+            </p>
+
+            <p>
+                You've been reliable. You've worked safely. You've taken responsibility
+                for your work. You've treated customers and coworkers professionally.
+                You've shown initiative, good judgment, and integrity.
+            </p>
+
+            <p>
+                Most importantly, you've shown the shop that
+                <strong>you can be trusted</strong>.
+            </p>
+
+            <div class="highlight">
+                <strong>Management offers you a permanent position.</strong>
+                <br><br>
+                Completing probation also comes with a <strong>pay increase</strong>.
+            </div>
+
+            <p>Your manager adds:</p>
+
+            <div class="quote">
+                “Keep working like this.”
+            </div>
+
+            <p>
+                If you continue demonstrating the same work ethic and professionalism,
+                the shop plans to select you for
+                <strong>advanced training and additional certification opportunities</strong>
+                as you develop.
+            </p>
+
+            <p>
+                The company is willing to invest in you because you've shown that
+                <strong>you're willing to invest in yourself.</strong>
+            </p>
+        `;
+
+    } else if (professionalCount >= 10 && !integrityFailure && !wheelFailure) {
+
+        title = "POSITION OFFERED";
+
+        body = `
+            <p>
+                Your manager tells you that you've successfully completed your probationary period.
+            </p>
+
+            <p>
+                You've shown that you can be relied upon and that you're developing into
+                a technician the shop wants to keep.
+            </p>
+
+            <div class="highlight">
+                <strong>You are offered a permanent position and receive the pay increase
+                that comes with completing probation.</strong>
+            </div>
+
+            <p>
+                Your manager also points out a few situations where your judgment or
+                professionalism could improve.
+            </p>
+
+            <p>
+                You're expected to learn from those situations as you continue developing.
+            </p>
+        `;
+
+    } else if (professionalCount >= 7 && !integrityFailure) {
+
+        title = "PROBATION EXTENDED";
+
+        body = `
+            <p>Your manager sees potential—but also sees a pattern that concerns them.</p>
+
+            <p>
+                You've demonstrated good technical ability in some situations,
+                but your reliability, judgment, communication, or professionalism
+                has not been consistent enough yet.
+            </p>
+
+            <div class="highlight">
+                Management decides to <strong>extend your probationary period</strong>
+                rather than offer you the permanent position today.
+            </div>
+
+            <p>
+                You've been given another opportunity.
+            </p>
+
+            <p><strong>What you do with it is another choice.</strong></p>
+        `;
+
+    } else {
+
+        title = "POSITION NOT OFFERED";
+
+        body = `
+            <p>Your manager closes the evaluation.</p>
+
+            <p>
+                No single mistake made this decision.
+            </p>
+
+            <p>
+                The concern is the <strong>pattern created by your choices</strong>:
+                reliability, judgment, customer service, safety, teamwork,
+                accountability, or integrity.
+            </p>
+
+            <div class="highlight">
+                <strong>The shop decides not to offer you a permanent position
+                after your probationary period.</strong>
+            </div>
+
+            <p>
+                Technical ability matters.
+            </p>
+
+            <p>
+                But employers also have to be able to trust the people representing
+                their business and working on their customers' vehicles.
+            </p>
+        `;
+    }
+
+    statusText.textContent = "Probation Complete";
+    setProgress(100);
+
+    screen.innerHTML = `
+        <section class="card review-card">
+
+            <span class="eyebrow">30-Day Performance Review</span>
+
+            <h2>${title}</h2>
+
+            ${body}
+
+            <hr style="border:none;border-top:1px solid #d7e0e5;margin:35px 0;">
+
+            <div class="final-message">
+
+                <h2>YOUR CHOICES CREATED YOUR REPUTATION.</h2>
+
+                <p>
+                    None of these decisions seemed career-changing when you made them.
+                </p>
+
+                <p>
+                    Clocking in. Washing your hands. Wearing PPE. Checking your work.
+                    Owning a mistake. Helping a coworker. Talking to a customer.
+                </p>
+
+                <p>
+                    <strong>Your employer wasn't evaluating one decision.</strong>
+                </p>
+
+                <p>
+                    <strong>They were evaluating the pattern created by all of them.</strong>
+                </p>
+
+                <p class="lead">
+                    That's professionalism.
+                </p>
+
+                <br>
+
+                <button class="secondary" onclick="restartSimulation()">
+                    RESTART ACTIVITY
+                </button>
+
+            </div>
+
+        </section>
+    `;
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function restartSimulation() {
+    currentScenario = 0;
+    consequenceIndex = 0;
+    answers = [];
+    showIntro();
+}
+
+showIntro();
+
+</script>
+
+</body>
+</html>

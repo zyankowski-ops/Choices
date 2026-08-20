@@ -442,7 +442,7 @@
     .scenario-visual img, .review-visual img {
         display: block;
         width: 100%;
-        aspect-ratio: 16 / 9;
+        height: 280px;
         object-fit: cover;
     }
     .scenario-image-caption, .review-image-caption {
@@ -456,7 +456,8 @@
     .scenario-image-caption { color: #dce7ed; }
     .review-image-caption { color: var(--gold); text-align: center; }
     @media (max-width: 760px) {
-        .scenario-visual, .review-visual { margin: 16px 0 20px; border-radius: 12px; }
+        .scenario-visual, .review-visual { margin: 14px 0 18px; border-radius: 12px; }
+        .scenario-visual img, .review-visual img { height: 210px; }
     }
 
     @media (min-width: 980px) {

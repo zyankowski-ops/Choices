@@ -427,6 +427,38 @@
         margin-right: auto;
     }
 
+
+    .scenario-visual, .review-visual {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        margin: 20px 0 26px;
+        border-radius: 16px;
+        overflow: hidden;
+        background: var(--navy-900);
+        border: 1px solid rgba(22,56,77,.18);
+        box-shadow: 0 14px 32px rgba(0,0,0,.16);
+    }
+    .scenario-visual img, .review-visual img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+    }
+    .scenario-image-caption, .review-image-caption {
+        padding: 9px 13px 10px;
+        background: linear-gradient(90deg, var(--navy-900), var(--navy-800));
+        font-size: .78rem;
+        font-weight: 900;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+    .scenario-image-caption { color: #dce7ed; }
+    .review-image-caption { color: var(--gold); text-align: center; }
+    @media (max-width: 760px) {
+        .scenario-visual, .review-visual { margin: 16px 0 20px; border-radius: 12px; }
+    }
+
     @media (min-width: 980px) {
         .card {
             padding: 44px 48px;
@@ -513,6 +545,7 @@ const scenarios = [
 {
     title: "Clocking In",
     time: "7:56 AM",
+    image: "scenario1.png",
     text: `
         <p>Your shift starts at <strong>8:00 AM</strong>.</p>
 
@@ -539,6 +572,7 @@ const scenarios = [
 {
     title: "Customer Property",
     time: "8:20 AM",
+    image: "scenario2.png",
     text: `
         <p>You just helped another technician remove a CV axle and have a <strong>small amount of grease on your hands</strong>.</p>
 
@@ -565,6 +599,7 @@ const scenarios = [
 {
     title: "Protect Your Hearing or Keep Moving?",
     time: "8:45 AM",
+    image: "scenario3.png",
     text: `
         <p>The customer you're working for is waiting, and the <strong>promise time on the RO is 9:00 AM</strong>.</p>
 
@@ -591,6 +626,7 @@ const scenarios = [
 {
     title: "Final Check",
     time: "10:05 AM",
+    image: "scenario4.png",
     text: `
         <p>You just finished a repair that required removing one of the wheels.</p>
 
@@ -619,6 +655,7 @@ const scenarios = [
 {
     title: "Nobody Told You To",
     time: "10:50 AM",
+    image: "scenario5.png",
     text: `
         <p>You finish your current repair and turn in the RO.</p>
 
@@ -645,6 +682,7 @@ const scenarios = [
 {
     title: "The Comeback",
     time: "11:20 AM",
+    image: "scenario6.png",
     text: `
         <p>A vehicle you recently serviced returns to the shop with the <strong>Check Engine Light on</strong>.</p>
 
@@ -673,6 +711,7 @@ const scenarios = [
 {
     title: "Lunch",
     time: "12:28 PM",
+    image: "scenario7.png",
     text: `
         <p>You clocked out for your scheduled <strong>30-minute lunch at 12:00 PM</strong>.</p>
 
@@ -705,6 +744,7 @@ const scenarios = [
 {
     title: "Shop Banter",
     time: "1:15 PM",
+    image: "scenario8.png",
     text: `
         <p>You're still building your tool collection, so you've had to borrow a few things from the technicians around you. One of the more experienced techs has told you before that you can borrow from his cart as long as you put things back.</p>
 
@@ -735,6 +775,7 @@ const scenarios = [
 {
     title: "Receiving Criticism",
     time: "2:00 PM",
+    image: "scenario9.png",
     text: `
         <p>Your manager calls you over to discuss a vehicle you worked on earlier in the week.</p>
 
@@ -765,6 +806,7 @@ const scenarios = [
 {
     title: "But They Already Diagnosed It",
     time: "2:40 PM",
+    image: "scenario10.png",
     text: `
         <p>The service advisor brings a customer into the shop who wants to speak directly with you.</p>
 
@@ -797,6 +839,7 @@ const scenarios = [
 {
     title: "Wrong Part",
     time: "3:40 PM",
+    image: "scenario11.png",
     text: `
         <p>You're trying to finish one of your last jobs of the day.</p>
 
@@ -833,6 +876,7 @@ const scenarios = [
 {
     title: "One More Job",
     time: "4:55 PM",
+    image: "scenario12.png",
     text: `
         <p>The correct part finally arrived around <strong>4:40 PM</strong>. You finished the job, completed your checks, and wrapped everything up.</p>
 
@@ -1080,6 +1124,36 @@ const statusText = document.getElementById("statusText");
 const progressFill = document.getElementById("progressFill");
 const progressTrack = document.getElementById("progressTrack");
 
+
+function imageFallback(img) {
+    const visual = img.closest(".scenario-visual, .review-visual");
+    if (visual) visual.style.display = "none";
+}
+
+function scenarioVisual(s, number) {
+    return `
+        <div class="scenario-visual">
+            <img src="${s.image}"
+                 alt="Scenario ${number}: ${s.title}"
+                 loading="eager"
+                 onerror="imageFallback(this)">
+            <div class="scenario-image-caption">Scenario ${number} • ${s.title}</div>
+        </div>
+    `;
+}
+
+function reviewVisual(filename, caption) {
+    return `
+        <div class="review-visual">
+            <img src="${filename}"
+                 alt="${caption}"
+                 loading="eager"
+                 onerror="imageFallback(this)">
+            <div class="review-image-caption">${caption}</div>
+        </div>
+    `;
+}
+
 function setProgress(percent) {
     progressFill.style.width = percent + "%";
 }
@@ -1141,6 +1215,17 @@ function showIntro() {
 function startSimulation() {
     currentScenario = 0;
     answers = [];
+
+    scenarios.forEach(s => {
+        const img = new Image();
+        img.src = s.image;
+    });
+
+    ["bestscenario.png", "goodscenario.png", "terminationscenario.png"].forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+
     showScenario();
 }
 
@@ -1163,6 +1248,8 @@ function showScenario() {
             <div class="time-pill">${s.time}</div>
 
             <h2>${s.title}</h2>
+
+            ${scenarioVisual(s, currentScenario + 1)}
 
             ${s.text}
 
@@ -1360,143 +1447,80 @@ function showReview() {
 
     let title;
     let body;
+    let reviewImage;
+    let reviewImageCaption;
 
-    if (perfectProfessional && exceptional) {
+    if (perfectProfessional && exceptional && !integrityFailure && !wheelFailure) {
 
         title = "POSITION OFFERED — OUTSTANDING REVIEW";
+        reviewImage = "bestscenario.png";
+        reviewImageCaption = "Permanent Position Offered";
 
         body = `
             <p>Your manager looks over your evaluation.</p>
-
-            <div class="quote">
-                “You've made a strong impression around here.”
-            </div>
-
-            <p>
-                Your technical skills are developing exactly as expected for a new technician,
-                but what has stood out most is <strong>how you approach the job</strong>.
-            </p>
-
-            <p>
-                You've been reliable. You've worked safely. You've taken responsibility
-                for your work. You've treated customers and coworkers professionally.
-                You've shown initiative, good judgment, and integrity.
-            </p>
-
-            <p>
-                Most importantly, you've shown the shop that
-                <strong>you can be trusted</strong>.
-            </p>
-
+            <div class="quote">“You've made a strong impression around here.”</div>
+            <p>Your technical skills are developing exactly as expected for a new technician,
+            but what has stood out most is <strong>how you approach the job</strong>.</p>
+            <p>You've been reliable. You've worked safely. You've taken responsibility
+            for your work. You've treated customers and coworkers professionally.
+            You've shown initiative, good judgment, and integrity.</p>
+            <p>Most importantly, you've shown the shop that <strong>you can be trusted</strong>.</p>
             <div class="highlight">
-                <strong>Management offers you a permanent position.</strong>
-                <br><br>
+                <strong>Management offers you a permanent position.</strong><br><br>
                 Completing probation also comes with a <strong>pay increase</strong>.
             </div>
-
             <p>Your manager adds:</p>
-
-            <div class="quote">
-                “Keep working like this.”
-            </div>
-
-            <p>
-                If you continue demonstrating the same work ethic and professionalism,
-                the shop plans to select you for
-                <strong>advanced training and additional certification opportunities</strong>
-                as you develop.
-            </p>
-
-            <p>
-                The company is willing to invest in you because you've shown that
-                <strong>you're willing to invest in yourself.</strong>
-            </p>
-        `;
-
-    } else if (professionalCount >= 10 && !integrityFailure && !wheelFailure) {
-
-        title = "POSITION OFFERED";
-
-        body = `
-            <p>
-                Your manager tells you that you've successfully completed your probationary period.
-            </p>
-
-            <p>
-                You've shown that you can be relied upon and that you're developing into
-                a technician the shop wants to keep.
-            </p>
-
-            <div class="highlight">
-                <strong>You are offered a permanent position and receive the pay increase
-                that comes with completing probation.</strong>
-            </div>
-
-            <p>
-                Your manager also points out a few situations where your judgment or
-                professionalism could improve.
-            </p>
-
-            <p>
-                You're expected to learn from those situations as you continue developing.
-            </p>
+            <div class="quote">“Keep working like this.”</div>
+            <p>If you continue demonstrating the same work ethic and professionalism,
+            the shop plans to select you for <strong>advanced training and additional
+            certification opportunities</strong> as you develop.</p>
+            <p>The company is willing to invest in you because you've shown that
+            <strong>you're willing to invest in yourself.</strong></p>
         `;
 
     } else if (professionalCount >= 7 && !integrityFailure) {
 
         title = "PROBATION EXTENDED";
+        reviewImage = "goodscenario.png";
+        reviewImageCaption = "Probation Extended";
 
         body = `
             <p>Your manager sees potential—but also sees a pattern that concerns them.</p>
-
-            <p>
-                You've demonstrated good technical ability in some situations,
-                but your reliability, judgment, communication, or professionalism
-                has not been consistent enough yet.
-            </p>
-
+            <p>You've demonstrated good technical ability in several situations,
+            and there are clear signs that you can become a valuable technician.</p>
+            <p>At the same time, your reliability, judgment, communication,
+            safety habits, attention to detail, or professionalism
+            has not been consistent enough yet.</p>
             <div class="highlight">
                 Management decides to <strong>extend your probationary period</strong>
                 rather than offer you the permanent position today.
             </div>
-
-            <p>
-                You've been given another opportunity.
-            </p>
-
-            <p><strong>What you do with it is another choice.</strong></p>
+            <p>This is not a termination. The shop is giving you more time because
+            management believes there is still something worth developing.</p>
+            <p>Now they need to see whether you can turn individual good decisions
+            into a <strong>consistent professional pattern</strong>.</p>
+            <p><strong>You've been given another opportunity. What you do with it is another choice.</strong></p>
         `;
 
     } else {
 
         title = "POSITION NOT OFFERED";
+        reviewImage = "terminationscenario.png";
+        reviewImageCaption = "Employment Ends After Probation";
 
         body = `
             <p>Your manager closes the evaluation.</p>
-
-            <p>
-                No single mistake made this decision.
-            </p>
-
-            <p>
-                The concern is the <strong>pattern created by your choices</strong>:
-                reliability, judgment, customer service, safety, teamwork,
-                accountability, or integrity.
-            </p>
-
+            <p>No single mistake made this decision.</p>
+            <p>The concern is the <strong>pattern created by your choices</strong>:
+            reliability, judgment, customer service, safety, teamwork,
+            accountability, or integrity.</p>
             <div class="highlight">
                 <strong>The shop decides not to offer you a permanent position
                 after your probationary period.</strong>
             </div>
-
-            <p>
-                Technical ability matters.
-            </p>
-
-            <p>
-                But employers also have to be able to trust the people representing
-                their business and working on their customers' vehicles.
-            </p>
+            <p>Technical ability matters.</p>
+            <p>But employers also have to be able to trust the people representing
+            their business and working on their customers' vehicles.</p>
         `;
     }
 
@@ -1509,6 +1533,8 @@ function showReview() {
             <span class="eyebrow">30-Day Performance Review</span>
 
             <h2>${title}</h2>
+
+            ${reviewVisual(reviewImage, reviewImageCaption)}
 
             ${body}
 

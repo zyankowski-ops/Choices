@@ -4,243 +4,440 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Week 3: Shop Choices</title>
+<title>Week 3: Choices on the Job</title>
 
 <style>
     * {
         box-sizing: border-box;
     }
 
+    html {
+        scroll-behavior: smooth;
+    }
+
     body {
         margin: 0;
         font-family: Arial, Helvetica, sans-serif;
-        background: #f3f5f7;
+        background:
+            linear-gradient(rgba(243,245,247,.96), rgba(243,245,247,.96)),
+            #f3f5f7;
         color: #17212b;
     }
 
     .page {
-        max-width: 1150px;
+        width: min(1160px, calc(100% - 30px));
         margin: 0 auto;
-        padding: 30px 20px 50px;
+        padding: 28px 0 50px;
     }
 
-    .header {
+    .hero {
         background: #2a5673;
         color: white;
-        border-radius: 14px;
-        padding: 24px 30px;
+        border-radius: 18px;
+        padding: 34px;
+        box-shadow: 0 6px 18px rgba(0,0,0,.10);
         margin-bottom: 22px;
-        box-shadow: 0 3px 10px rgba(0,0,0,.08);
     }
 
-    .header h1 {
-        margin: 0 0 8px;
-        font-size: 30px;
+    .hero-kicker {
+        text-transform: uppercase;
+        letter-spacing: 1.3px;
+        font-size: 13px;
+        font-weight: 800;
+        color: #ffd05a;
+        margin-bottom: 9px;
     }
 
-    .header p {
+    .hero h1 {
+        margin: 0 0 10px;
+        font-size: clamp(30px, 5vw, 46px);
+        line-height: 1.05;
+    }
+
+    .hero p {
         margin: 0;
-        font-size: 17px;
-        line-height: 1.4;
-        opacity: .95;
+        max-width: 850px;
+        line-height: 1.55;
+        font-size: 18px;
+        color: #edf4f8;
     }
 
-    .progress-wrap {
-        margin: 18px 0 26px;
+    .panel {
+        background: white;
+        border: 1px solid #d4dfe6;
+        border-radius: 18px;
+        padding: 30px;
+        box-shadow: 0 4px 14px rgba(0,0,0,.05);
+    }
+
+    .intro-grid {
+        display: grid;
+        grid-template-columns: 1.15fr .85fr;
+        gap: 25px;
+        margin-top: 22px;
+    }
+
+    .intro-box {
+        background: #f6f9fb;
+        border: 1px solid #d8e3e9;
+        border-radius: 15px;
+        padding: 23px;
+    }
+
+    .intro-box h2,
+    .intro-box h3 {
+        margin-top: 0;
+        color: #2a5673;
+    }
+
+    .intro-box p {
+        font-size: 17px;
+        line-height: 1.55;
+    }
+
+    .intro-box ul {
+        margin: 0;
+        padding-left: 22px;
+        font-size: 17px;
+        line-height: 1.7;
+    }
+
+    .start-button,
+    .continue-button,
+    .restart-button {
+        appearance: none;
+        border: 0;
+        border-radius: 11px;
+        padding: 14px 24px;
+        background: #2a5673;
+        color: white;
+        font-weight: 800;
+        font-size: 17px;
+        cursor: pointer;
+        transition: .2s ease;
+    }
+
+    .start-button:hover,
+    .continue-button:hover,
+    .restart-button:hover {
+        background: #1e435b;
+        transform: translateY(-1px);
+    }
+
+    .start-button {
+        margin-top: 24px;
+        background: #f4b62c;
+        color: #15212b;
+        font-size: 19px;
+    }
+
+    .start-button:hover {
+        background: #e9aa1a;
+    }
+
+    .game-header {
+        display: none;
+        margin-bottom: 22px;
+    }
+
+    .status-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 15px;
+        margin-bottom: 8px;
+    }
+
+    .day-status {
+        color: #2a5673;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: .8px;
+        font-weight: 800;
     }
 
     .progress-text {
         font-size: 14px;
-        font-weight: bold;
-        margin-bottom: 7px;
-        color: #425466;
+        font-weight: 800;
+        color: #536574;
     }
 
     .progress-bar {
-        height: 10px;
-        background: #dce3e8;
-        border-radius: 10px;
+        height: 11px;
+        width: 100%;
+        background: #dbe4e9;
+        border-radius: 30px;
         overflow: hidden;
     }
 
     .progress-fill {
+        width: 0;
         height: 100%;
-        width: 0%;
-        background: #f5b82e;
-        transition: width .35s ease;
+        background: #f4b62c;
+        transition: width .4s ease;
     }
 
-    .scenario {
+    .location-transition {
+        display: none;
+        min-height: 480px;
+        background: #1f4054;
+        color: white;
+        border-radius: 20px;
+        padding: 45px 30px;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        box-shadow: 0 7px 20px rgba(0,0,0,.13);
+    }
+
+    .location-transition.show {
+        display: flex;
+    }
+
+    .location-icon {
+        width: 92px;
+        height: 92px;
+        border-radius: 50%;
+        background: #f4b62c;
+        color: #15212b;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 43px;
+        margin-bottom: 22px;
+        font-weight: bold;
+    }
+
+    .location-transition h2 {
+        margin: 0 0 10px;
+        font-size: 35px;
+    }
+
+    .location-transition p {
+        margin: 0;
+        max-width: 650px;
+        font-size: 18px;
+        line-height: 1.55;
+        color: #e9f1f5;
+    }
+
+    .scenario-card {
+        display: none;
         background: white;
-        border: 1px solid #d2dce3;
-        border-radius: 16px;
-        padding: 28px;
+        border: 1px solid #d2dde4;
+        border-radius: 19px;
+        padding: 30px;
+        box-shadow: 0 5px 16px rgba(0,0,0,.06);
         margin-bottom: 24px;
     }
 
+    .scenario-card.show {
+        display: block;
+    }
+
+    .scenario-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 13px;
+        flex-wrap: wrap;
+    }
+
+    .location-label,
     .time-label {
-        font-size: 14px;
-        font-weight: bold;
-        color: #2a5673;
+        display: inline-block;
+        font-size: 13px;
+        font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: .6px;
-        margin-bottom: 7px;
+        letter-spacing: .8px;
     }
 
-    .scenario h2 {
-        margin: 0 0 12px;
-        font-size: 25px;
+    .location-label {
+        color: #2a5673;
     }
 
-    .scenario p {
-        font-size: 18px;
-        line-height: 1.55;
+    .time-label {
+        color: #657786;
+    }
+
+    .scenario-card h2 {
+        margin: 0 0 14px;
+        font-size: clamp(25px, 4vw, 33px);
+    }
+
+    .scenario-card > p {
         margin: 0;
+        font-size: 18px;
+        line-height: 1.62;
     }
 
     .choices {
+        display: none;
+        grid-template-columns: repeat(2, minmax(0,1fr));
+        gap: 22px;
+        margin-top: 24px;
+    }
+
+    .choices.show {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 24px;
     }
 
     .choice {
-        position: relative;
-        background: #f8fafb;
-        border: 2px solid #cbd9e2;
-        border-radius: 16px;
-        padding: 40px 28px 28px;
+        background: #fafcfd;
+        border: 2px solid #ccd9e1;
+        border-radius: 17px;
+        padding: 24px;
         cursor: pointer;
+        min-height: 220px;
+        position: relative;
         transition: .18s ease;
-        min-height: 205px;
     }
 
     .choice:hover {
-        transform: translateY(-3px);
         border-color: #2a5673;
-        box-shadow: 0 5px 14px rgba(0,0,0,.08);
+        transform: translateY(-3px);
+        box-shadow: 0 7px 18px rgba(0,0,0,.08);
+    }
+
+    .choice.disabled {
+        pointer-events: none;
+        opacity: .50;
     }
 
     .choice-letter {
-        position: absolute;
-        top: 18px;
-        left: 28px;
-        width: 43px;
-        height: 43px;
-        background: #f5b82e;
+        width: 44px;
+        height: 44px;
         border-radius: 50%;
         display: flex;
-        align-items: center;
         justify-content: center;
+        align-items: center;
+        background: #f4b62c;
+        color: #17212b;
         font-size: 18px;
-        font-weight: bold;
-        color: #111;
+        font-weight: 900;
+        margin-bottom: 18px;
     }
 
     .choice h3 {
-        margin: 45px 0 9px;
         font-size: 21px;
+        margin: 0 0 9px;
+        color: #17212b;
     }
 
     .choice p {
         margin: 0;
         font-size: 17px;
-        line-height: 1.45;
-    }
-
-    .result {
-        display: none;
-        background: white;
-        border-left: 6px solid #2a5673;
-        border-radius: 10px;
-        padding: 24px;
-        margin-top: 24px;
-    }
-
-    .result h3 {
-        margin-top: 0;
-        font-size: 21px;
-    }
-
-    .result p {
-        font-size: 17px;
         line-height: 1.5;
+        color: #334754;
     }
 
-    .continue-btn,
-    .restart-btn {
-        border: 0;
-        background: #2a5673;
-        color: white;
+    .outcome {
+        display: none;
+        margin-top: 25px;
+        background: #eef4f7;
+        border-left: 6px solid #2a5673;
+        border-radius: 12px;
+        padding: 22px;
+    }
+
+    .outcome.show {
+        display: block;
+    }
+
+    .outcome h3 {
+        margin: 0 0 8px;
+        color: #2a5673;
+    }
+
+    .outcome p {
+        margin: 0;
         font-size: 17px;
-        font-weight: bold;
-        padding: 13px 22px;
-        border-radius: 9px;
-        cursor: pointer;
-        margin-top: 12px;
+        line-height: 1.55;
     }
 
-    .continue-btn:hover,
-    .restart-btn:hover {
-        background: #1e4259;
+    .continue-button {
+        margin-top: 18px;
     }
 
     .ending {
+        display: none;
         text-align: center;
         background: white;
-        border-radius: 18px;
-        padding: 38px 30px;
-        border: 1px solid #d2dce3;
+        border-radius: 20px;
+        border: 1px solid #d2dde4;
+        padding: 40px 30px;
+        box-shadow: 0 5px 16px rgba(0,0,0,.07);
+    }
+
+    .ending.show {
+        display: block;
     }
 
     .ending-badge {
-        width: 74px;
-        height: 74px;
-        margin: 0 auto 18px;
+        width: 85px;
+        height: 85px;
         border-radius: 50%;
-        background: #f5b82e;
+        margin: 0 auto 18px;
+        background: #f4b62c;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 34px;
+        font-size: 40px;
+        font-weight: 900;
     }
 
     .ending h2 {
-        font-size: 30px;
-        margin: 0 0 12px;
         color: #2a5673;
+        margin: 0 0 15px;
+        font-size: 34px;
     }
 
     .ending p {
-        max-width: 760px;
-        margin: 0 auto 15px;
+        margin: 0 auto 17px;
+        max-width: 800px;
         font-size: 18px;
-        line-height: 1.6;
+        line-height: 1.65;
     }
 
     .reflection {
-        margin-top: 28px;
-        background: #eef3f6;
-        border-radius: 12px;
-        padding: 20px;
+        max-width: 820px;
+        margin: 28px auto 0;
+        padding: 23px;
         text-align: left;
+        border-radius: 14px;
+        background: #f2f6f8;
+        border: 1px solid #d7e2e8;
     }
 
-    .reflection strong {
+    .reflection h3 {
         color: #2a5673;
+        margin-top: 0;
     }
 
-    @media (max-width: 760px) {
+    .reflection p {
+        font-size: 17px;
+    }
+
+    .restart-button {
+        margin-top: 25px;
+    }
+
+    @media (max-width: 800px) {
+        .intro-grid,
         .choices {
             grid-template-columns: 1fr;
         }
 
-        .header h1 {
-            font-size: 25px;
+        .hero,
+        .panel,
+        .scenario-card {
+            padding: 23px;
         }
 
-        .scenario {
-            padding: 22px;
+        .choice {
+            min-height: auto;
         }
     }
 </style>
@@ -250,516 +447,800 @@
 
 <div class="page">
 
-    <div class="header">
-        <h1>Your Third Week on the Job</h1>
-        <p>
-            You've made it through your first two weeks at the shop.
-            You're still in your 30-day probationary period, and people are starting
-            to form an opinion about the kind of employee you'll be.
-        </p>
-    </div>
+    <!-- INTRO -->
 
-    <div class="progress-wrap">
-        <div class="progress-text" id="progressText">Decision 1 of 8</div>
+    <section id="intro">
+
+        <div class="hero">
+            <div class="hero-kicker">RMCTC Automotive Technology</div>
+
+            <h1>Week 3: Choices on the Job</h1>
+
+            <p>
+                You've made it through your first two weeks at an automotive repair shop.
+                You're beginning to understand how the shop operates, people are giving
+                you more responsibility, and you're starting to work with less direct supervision.
+            </p>
+        </div>
+
+        <div class="panel">
+
+            <h2>This isn't a test of automotive knowledge.</h2>
+
+            <p style="font-size:18px; line-height:1.6;">
+                You're still inside your <strong>30-day probationary period</strong>.
+                During that time, your employer isn't only watching whether you can perform
+                automotive work. They're also learning what kind of employee you are.
+            </p>
+
+            <div class="intro-grid">
+
+                <div class="intro-box">
+
+                    <h3>Throughout one workday, you'll make decisions involving:</h3>
+
+                    <ul>
+                        <li>time and attendance</li>
+                        <li>work habits</li>
+                        <li>communication</li>
+                        <li>safety</li>
+                        <li>quality of work</li>
+                        <li>customers and coworkers</li>
+                        <li>personal responsibilities</li>
+                    </ul>
+
+                </div>
+
+                <div class="intro-box">
+
+                    <h3>There may not always be an obvious answer.</h3>
+
+                    <p>
+                        Some decisions will have two reasonable choices.
+                        Other choices may seem minor at the time but become more
+                        important when they're combined with the rest of your day.
+                    </p>
+
+                    <p>
+                        Make the decision you believe you would actually make on the job.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <button class="start-button" onclick="startSimulation()">
+                Begin Your Workday
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- GAME HEADER -->
+
+    <section class="game-header" id="gameHeader">
+
+        <div class="status-row">
+            <div class="day-status">Tuesday • Week 3</div>
+            <div class="progress-text" id="progressText">Decision 1 of 12</div>
+        </div>
+
         <div class="progress-bar">
             <div class="progress-fill" id="progressFill"></div>
         </div>
-    </div>
 
-    <div id="game"></div>
+    </section>
+
+
+    <!-- LOCATION TRANSITION -->
+
+    <section class="location-transition" id="locationTransition">
+
+        <div class="location-icon" id="locationIcon">→</div>
+
+        <h2 id="locationTitle">Entering the Office</h2>
+
+        <p id="locationText"></p>
+
+    </section>
+
+
+    <!-- SCENARIO -->
+
+    <section class="scenario-card" id="scenarioCard">
+
+        <div class="scenario-top">
+            <div class="location-label" id="locationLabel"></div>
+            <div class="time-label" id="timeLabel"></div>
+        </div>
+
+        <h2 id="scenarioTitle"></h2>
+
+        <p id="scenarioText"></p>
+
+        <div class="choices" id="choices"></div>
+
+        <div class="outcome" id="outcome"></div>
+
+    </section>
+
+
+    <!-- ENDING -->
+
+    <section class="ending" id="ending"></section>
 
 </div>
 
+
 <script>
+
+/* ==========================================================
+   SCENARIOS
+   ========================================================== */
 
 const scenarios = [
 
 {
+    location: "Parking Lot",
+    locationTitle: "You've Arrived",
+    locationIcon: "P",
+    transition:
+        "It's Tuesday morning during your third week. Your shift begins at 8:00 AM.",
     time: "7:52 AM",
-    title: "You Arrive at the Shop",
-    text: `
-        Your shift begins at 8:00 AM. You walk into the building at 7:52 with your
-        backpack, lunch, and work shirt. A few technicians are already out in the shop.
-    `,
+    title: "Before You Walk Inside",
+    text:
+        "You pull into the parking lot with about eight minutes before your shift begins. Your backpack and lunch are still in the truck, and you need a minute or two to get yourself together before heading inside.",
+    choices: [
+        {
+            title: "Head inside now",
+            text:
+                "Grab your things and head into the building. You can get situated once you're inside.",
+            score: 2,
+            outcome:
+                "You head inside with enough time to get settled before the shift begins."
+        },
+        {
+            title: "Use the remaining time outside",
+            text:
+                "You've got several minutes. Finish what you're doing in the truck, then head inside closer to 8:00.",
+            score: 1,
+            outcome:
+                "You still make it into the building before the shift starts, but you've left yourself very little room if anything slows you down."
+        }
+    ]
+},
+
+{
+    location: "Front Office",
+    locationTitle: "Entering the Office",
+    locationIcon: "→",
+    transition:
+        "You walk through the front door. The service counter is beginning to get busy, phones are ringing, and technicians are moving between the office and the shop.",
+    time: "7:55 AM",
+    title: "When Do You Clock In?",
+    text:
+        "Your backpack still needs to be put away and you need to get your work shirt situated. The time clock is right inside the office.",
     choices: [
         {
             title: "Clock in when you arrive",
-            text: `
-                Clock in now, then put your belongings away, get your uniform situated,
-                and head into the shop.
-            `,
+            text:
+                "Clock in now, then put your belongings away, get situated, and head toward the shop.",
             score: 1,
-            result: `
-                You clock in and begin getting situated. You're technically at work,
-                but several minutes of paid time pass before you're actually ready
-                to begin your assignment.
-            `
+            outcome:
+                "You're officially on the clock, but several minutes of paid time pass while you're still getting yourself ready."
         },
         {
             title: "Clock in when you're ready",
-            text: `
-                Put your belongings away, get your uniform situated, and make sure
-                you're ready to start working before clocking in.
-            `,
+            text:
+                "Put your belongings away and get yourself ready first, then clock in just before heading into the shop.",
             score: 2,
-            result: `
-                You get yourself situated first and clock in just before 8:00.
-                When your shift begins, you're already prepared to head directly
-                into the shop.
-            `
+            outcome:
+                "When you clock in, you're already prepared to begin working."
         }
     ]
 },
 
 {
-    time: "8:35 AM",
-    title: "Someone Needs a Hand",
-    text: `
-        You've just started an oil service your supervisor assigned to you.
-        A technician working two bays over asks if you can help him hold a component
-        in place for a few minutes. Your vehicle isn't urgent, but you've already
-        started working on it.
-    `,
+    location: "Shop Floor",
+    locationTitle: "Into the Shop",
+    locationIcon: "⚙",
+    transition:
+        "You step through the shop door. Lifts are going up, air tools are running, and today's repair orders are already being handed out.",
+    time: "8:05 AM",
+    title: "The Day Starts Quickly",
+    text:
+        "Your supervisor hands you an oil service and multipoint inspection. Before you begin, another technician asks if you can give him a hand moving a vehicle into his bay.",
     choices: [
         {
-            title: "Help him now",
-            text: `
-                Step away from your vehicle for a few minutes and help the technician.
-                You can return to your oil service when he's finished.
-            `,
-            score: 1,
-            result: `
-                The technician appreciates the help. When you return, though, you
-                have to reorient yourself to where you were in your own job.
-                Nothing goes wrong, but your work was interrupted.
-            `
+            title: "Help him first",
+            text:
+                "It's only going to take a minute. Help move the vehicle, then start your assigned job.",
+            score: 2,
+            outcome:
+                "You help your coworker and then return to your assignment. The interruption is small and you're still able to get started quickly."
         },
         {
-            title: "Finish your current step first",
-            text: `
-                Tell him you'll help as soon as you finish the step you're currently on
-                and leave your vehicle in a safe stopping point.
-            `,
-            score: 2,
-            result: `
-                You finish the step you're on, make sure the vehicle is left safely,
-                and then go help. He waits a few extra minutes, but both jobs stay organized.
-            `
+            title: "Start your assignment first",
+            text:
+                "Your supervisor already gave you a job. Get started and let the other technician find someone who isn't already assigned work.",
+            score: 1,
+            outcome:
+                "You stay focused on your assignment. Your coworker eventually gets help from someone else, but you've missed an easy opportunity to support the team."
         }
     ]
 },
 
 {
-    time: "9:20 AM",
-    title: "The Procedure Looks Familiar",
-    text: `
-        Your next assignment is a repair you've seen demonstrated before.
-        You understand the general process, but this particular vehicle is a different
-        model than the one you practiced on. The shop is busy and everyone else appears
-        to be working.
-    `,
+    location: "Your Bay",
+    locationTitle: "Your First Job",
+    locationIcon: "1",
+    transition:
+        "The vehicle is on your lift and you're beginning the inspection.",
+    time: "8:40 AM",
+    title: "Something Doesn't Match What You've Seen Before",
+    text:
+        "You've performed this type of service before, but the vehicle is a different model than the ones you've worked on recently. Most of the procedure looks familiar.",
     choices: [
         {
             title: "Start with what you know",
-            text: `
-                Begin the repair using the process you're familiar with.
-                If something looks different once you get into the job, stop and check.
-            `,
+            text:
+                "Begin using the process you're familiar with. If you encounter something different, stop and verify it then.",
             score: 1,
-            result: `
-                Most of the procedure is familiar. Once you're partway into the job,
-                you find that one step is different on this model and have to stop
-                to verify the procedure.
-            `
+            outcome:
+                "Most of the job goes exactly as expected, but you eventually encounter a model-specific step and have to stop partway through to verify the procedure."
         },
         {
-            title: "Verify the procedure first",
-            text: `
-                Spend a few minutes checking the service information for this model
-                before taking anything apart.
-            `,
+            title: "Check the procedure first",
+            text:
+                "Spend a few minutes reviewing the service information before taking anything apart.",
             score: 2,
-            result: `
-                The basic repair is exactly what you expected, but you catch one
-                model-specific instruction before beginning. It costs a few minutes
-                up front and prevents you from having to backtrack.
-            `
+            outcome:
+                "The procedure is mostly familiar, but you catch one model-specific instruction before beginning."
         }
     ]
 },
 
 {
-    time: "10:45 AM",
-    title: "The Vehicle Is Already Outside",
-    text: `
-        Earlier this morning you completed a tire rotation. The vehicle has already
-        been moved outside and is waiting for the customer. While cleaning your bay,
-        you notice the torque wrench you were using still sitting beside the lift.
-    `,
+    location: "Your Bay",
+    locationTitle: "Work Picks Up",
+    locationIcon: "↗",
+    transition:
+        "The morning is moving quickly and several vehicles are waiting.",
+    time: "9:35 AM",
+    title: "You Find Something During the Inspection",
+    text:
+        "During your inspection you notice a component that looks worn. You're not sure whether it's bad enough to require replacement, but it doesn't look like something you should ignore.",
     choices: [
         {
-            title: "Put the tool away",
-            text: `
-                You followed your normal process when you completed the job.
-                Put the torque wrench away and continue to your next assignment.
-            `,
-            score: 0,
-            result: `
-                The vehicle remains outside ready for pickup. Nothing immediately
-                indicates that anything is wrong, and the shop continues moving.
-                You've decided to trust the process you remember completing.
-            `
+            title: "Document what you see",
+            text:
+                "Write down what you observed and continue the inspection so your supervisor can review it with you afterward.",
+            score: 2,
+            outcome:
+                "You finish the inspection and give your supervisor a clear description of what you found. He checks it and helps determine whether action is needed."
         },
         {
-            title: "Bring the vehicle back in",
-            text: `
-                Take a few minutes to bring the vehicle back into the shop and verify
-                the wheel torque before the customer arrives.
-            `,
-            score: 3,
-            result: `
-                You bring the vehicle back inside and verify every wheel.
-                They are properly torqued. The extra check doesn't change the repair,
-                but it removes any uncertainty before the vehicle leaves the shop.
-            `
+            title: "Get another opinion immediately",
+            text:
+                "Stop the inspection and find your supervisor so he can look at it before you continue.",
+            score: 2,
+            outcome:
+                "Your supervisor takes a look. It interrupts his current task, but you get an answer immediately and continue knowing exactly how to document the concern."
         }
     ]
 },
 
 {
+    location: "Parking Area",
+    locationTitle: "A Finished Vehicle",
+    locationIcon: "✓",
+    transition:
+        "One of the morning vehicles has been completed and moved outside to wait for the customer.",
+    time: "10:45 AM",
+    title: "The Torque Wrench Is Still by the Lift",
+    text:
+        "Earlier you completed a tire rotation. While cleaning the bay afterward, you notice the torque wrench you were using sitting beside the lift. The vehicle is already parked outside and the customer is expected soon.",
+    choices: [
+        {
+            title: "Finish cleaning the bay",
+            text:
+                "You followed your normal procedure during the tire rotation. Put the torque wrench away and move on to your next job.",
+            score: 0,
+            outcome:
+                "The vehicle remains ready for pickup. You're trusting that the completed repair was performed correctly."
+        },
+        {
+            title: "Bring the vehicle back inside",
+            text:
+                "Pull the vehicle back into the shop and verify the wheel torque before the customer arrives.",
+            score: 3,
+            outcome:
+                "Every wheel checks correctly. You spent a few extra minutes verifying something that was already right, but the vehicle leaves with no uncertainty."
+        }
+    ]
+},
+
+{
+    location: "Shop Floor",
+    locationTitle: "Late Morning",
+    locationIcon: "11",
+    transition:
+        "The shop is busy now. You're beginning to work with less supervision as the day goes on.",
+    time: "11:20 AM",
+    title: "A Coworker Offers a Shortcut",
+    text:
+        "Another technician watches you working and tells you there's a faster way to complete the job. His method would save several minutes, and he says he's done it that way plenty of times.",
+    choices: [
+        {
+            title: "Use his method",
+            text:
+                "He's more experienced and says it works. Try the faster method so you can keep the job moving.",
+            score: 1,
+            outcome:
+                "The shortcut works this time and the job moves faster. You also realize you don't fully understand why his method differs from the normal procedure."
+        },
+        {
+            title: "Stick with the procedure",
+            text:
+                "Thank him for the suggestion, but continue using the method you've been trained to use.",
+            score: 2,
+            outcome:
+                "The job takes a little longer, but you complete it using a process you understand and can defend."
+        }
+    ]
+},
+
+{
+    location: "Your Bay",
+    locationTitle: "Lunch Approaches",
+    locationIcon: "12",
+    transition:
+        "It's almost lunch, but your current job isn't quite finished.",
     time: "12:05 PM",
-    title: "You're Almost Finished",
-    text: `
-        Lunch starts at noon. You're five minutes into lunch time, but you're only
-        a few minutes away from finishing the vehicle in your bay. The rest of the
-        group has already headed toward the break room.
-    `,
+    title: "You're Only a Few Minutes Away",
+    text:
+        "Lunch began five minutes ago. The rest of the group has already walked toward the break room, but you're only a few minutes away from finishing the vehicle in your bay.",
     choices: [
         {
             title: "Finish the vehicle first",
-            text: `
-                Stay on the job for a few more minutes, finish what you're doing,
-                then take your lunch.
-            `,
+            text:
+                "Complete the job and leave the bay ready before taking your lunch.",
             score: 2,
-            result: `
-                You finish the vehicle and leave the bay in a good stopping point.
-                Your lunch starts a little later than everyone else's, but the job
-                doesn't sit half-finished.
-            `
+            outcome:
+                "You finish the job and take your lunch a little later. The vehicle isn't left partially completed while you're away."
         },
         {
-            title: "Take lunch with everyone else",
-            text: `
-                Leave the vehicle where it is and take your scheduled lunch.
-                You'll finish the remaining work when lunch is over.
-            `,
-            score: 1,
-            result: `
-                You take your lunch at the scheduled time. The vehicle remains
-                partially completed until you return. The situation is safe,
-                but the job is delayed until after lunch.
-            `
+            title: "Take lunch now",
+            text:
+                "You're entitled to your scheduled break. Leave the vehicle in a safe stopping point and finish it when you return.",
+            score: 2,
+            outcome:
+                "You leave the vehicle safely and take your break with everyone else. The remaining work waits until you return."
         }
     ]
 },
 
 {
+    location: "Service Area",
+    locationTitle: "Back From Lunch",
+    locationIcon: "?",
+    transition:
+        "The afternoon brings more interaction with customers and the front office.",
     time: "1:40 PM",
-    title: "The Customer Asks You Directly",
-    text: `
-        While you're moving a vehicle, its owner sees you in the parking lot and asks,
-        "Do you think it's going to need brakes?" You've seen the inspection notes,
-        and the pads are getting low, but nobody has discussed the repair with the
-        customer yet.
-    `,
+    title: "A Customer Stops You",
+    text:
+        "While you're moving a vehicle, the owner sees you and asks, \"Do you think it's going to need brakes?\" You've seen the inspection notes and know the pads are getting low, but nobody has discussed the repair with the customer yet.",
     choices: [
         {
-            title: "Answer the question",
-            text: `
-                Tell the customer that the brakes are getting low and they'll probably
-                need to be replaced soon. You're only explaining what you observed.
-            `,
+            title: "Answer what you know",
+            text:
+                "Tell the customer the brakes are getting low and will probably need to be replaced soon.",
             score: 1,
-            result: `
-                Your answer is reasonable, but the customer immediately begins asking
-                about price, urgency, and whether the vehicle is safe to drive.
-                You're now having a conversation that normally belongs with the person
-                handling the repair order.
-            `
+            outcome:
+                "The customer immediately begins asking about price, urgency, and whether the vehicle is safe. The conversation moves beyond what you were prepared to answer."
         },
         {
-            title: "Send them to the right person",
-            text: `
-                Tell the customer that the inspection is being documented and the
-                service advisor or supervisor will go over the findings with them.
-            `,
+            title: "Direct them to the service advisor",
+            text:
+                "Explain that the inspection is being documented and the advisor will review the findings with them.",
             score: 2,
-            result: `
-                You acknowledge the customer's question without ignoring them,
-                but leave the repair recommendation and pricing conversation with
-                the person responsible for communicating it.
-            `
+            outcome:
+                "You acknowledge the customer's concern while leaving the recommendation and pricing conversation with the person responsible for the repair order."
         }
     ]
 },
 
 {
+    location: "Shop Floor",
+    locationTitle: "Mid-Afternoon",
+    locationIcon: "!",
+    transition:
+        "You've been moving steadily all afternoon. You're more comfortable now, which means you're also being trusted with more independence.",
+    time: "2:55 PM",
+    title: "A Small Mistake Costs Time",
+    text:
+        "While reassembling a job, you realize you installed a component in the wrong position. Nothing is damaged, but correcting it means taking several pieces back apart.",
+    choices: [
+        {
+            title: "Correct it yourself",
+            text:
+                "You know exactly what happened and how to fix it. Take it back apart, correct the mistake, and keep moving.",
+            score: 2,
+            outcome:
+                "You correct the mistake and finish the repair. It costs time, but you take responsibility for your own work and make sure it's right."
+        },
+        {
+            title: "Tell your supervisor first",
+            text:
+                "Before going any further, explain what happened and let your supervisor know you'll need extra time to correct it.",
+            score: 2,
+            outcome:
+                "Your supervisor appreciates knowing why the job is taking longer. He has you correct it and reminds you that mistakes matter less than what you do after discovering them."
+        }
+    ]
+},
+
+{
+    location: "Your Bay",
+    locationTitle: "The End of the Shift",
+    locationIcon: "5",
+    transition:
+        "It's getting close to 5:00. Most of the day's work is finished, but one repair is running behind.",
     time: "4:35 PM",
-    title: "A Job Runs Longer Than Expected",
-    text: `
-        Your shift ends at 5:00. You're helping with a vehicle that was expected to
-        be finished today, but the repair is running behind. You have plans at 5:30
-        that will be difficult to move. The technician you're working with looks like
-        he'll still be there after 5:00.
-    `,
+    title: "You Have Plans at 5:30",
+    text:
+        "Your scheduled shift ends at 5:00. You're helping another technician with a repair that was supposed to be completed today, but the job is taking longer than expected. You already have plans at 5:30 that will be difficult to move.",
     choices: [
         {
             title: "Plan to leave at 5:00",
-            text: `
-                Let the technician know before the end of the shift that you need
-                to leave on time. Finish as much as you can and make sure he knows
-                exactly where the job stands.
-            `,
+            text:
+                "Let the technician know now that you need to leave on time. Work until the end of your shift and make sure he knows exactly where the job stands.",
             score: 2,
-            result: `
-                You give him advance notice and work until the end of your scheduled
-                shift. At 5:00, he knows exactly what has been completed and what
-                still needs to be done.
-            `
+            outcome:
+                "You give advance notice and work until 5:00. When you leave, your coworker knows exactly what's complete and what remains."
         },
         {
-            title: "Stay until the job is done",
-            text: `
-                Your plans matter, but the team is trying to finish the vehicle today.
-                Stay after your scheduled shift and help finish the repair.
-            `,
+            title: "Plan to stay",
+            text:
+                "The team is trying to finish the vehicle today. Change your personal plans and stay until the repair is completed.",
             score: 2,
-            result: `
-                You stay and help move the job forward. Your coworker notices the effort,
-                although staying late also means changing plans you had already made
-                outside of work.
-            `
+            outcome:
+                "You stay beyond your scheduled shift and help finish the repair. Your coworker notices the extra effort, although your plans outside work have to change."
         }
     ]
 },
 
 {
+    location: "Shop Floor",
+    locationTitle: "Before You Leave",
+    locationIcon: "⌂",
+    transition:
+        "The shop is getting quiet. Vehicles are coming down from the lifts and everyone is beginning to head out.",
     time: "5:12 PM",
-    title: "One Last Thing",
-    text: `
-        Before leaving, you notice some tools and shop equipment from today's work
-        haven't been returned to their normal locations. Most of the other technicians
-        are wrapping up too.
-    `,
+    title: "One Last Look Around",
+    text:
+        "Some tools and equipment from today's work are still out. Most technicians are wrapping up and a few people have already left.",
     choices: [
         {
-            title: "Take care of your area",
-            text: `
-                Make sure the tools and equipment you used are returned and your
-                work area is ready for tomorrow before leaving.
-            `,
+            title: "Reset your work area",
+            text:
+                "Take a few minutes to return the tools and equipment you used and leave your area ready for tomorrow.",
             score: 2,
-            result: `
-                You take a few minutes to reset your work area. Tomorrow's shift can
-                begin without having to search for tools or clean up today's work.
-            `
+            outcome:
+                "You reset your bay before leaving. Tomorrow morning can begin without cleaning up today's work."
         },
         {
-            title: "Leave with the rest of the group",
-            text: `
-                The day is over and everyone is heading out. Anything left can be
-                dealt with first thing tomorrow morning.
-            `,
+            title: "Leave with everyone else",
+            text:
+                "The workday is already over. Anything left can be handled when the shop opens tomorrow.",
             score: 0,
-            result: `
-                You leave for the day. The next morning, some of the first few minutes
-                of the shift are spent putting away equipment that could have been
-                handled the night before.
-            `
+            outcome:
+                "You leave for the evening. The next morning begins with several minutes spent putting equipment away before new work can start."
         }
     ]
 }
 
 ];
 
+
+/* ==========================================================
+   GAME STATE
+   ========================================================== */
+
 let currentScenario = 0;
-let totalScore = 0;
-let choicesMade = [];
+let score = 0;
+let answers = [];
+
+
+/* ==========================================================
+   START
+   ========================================================== */
+
+function startSimulation() {
+
+    document.getElementById("intro").style.display = "none";
+    document.getElementById("gameHeader").style.display = "block";
+
+    currentScenario = 0;
+    score = 0;
+    answers = [];
+
+    showLocationTransition();
+}
+
+
+/* ==========================================================
+   LOCATION TRANSITION
+   ========================================================== */
+
+function showLocationTransition() {
+
+    const scenario = scenarios[currentScenario];
+
+    document.getElementById("scenarioCard").classList.remove("show");
+
+    const transition = document.getElementById("locationTransition");
+
+    document.getElementById("locationIcon").textContent =
+        scenario.locationIcon || "→";
+
+    document.getElementById("locationTitle").textContent =
+        scenario.locationTitle;
+
+    document.getElementById("locationText").textContent =
+        scenario.transition;
+
+    transition.classList.add("show");
+
+    updateProgress();
+
+    setTimeout(() => {
+
+        transition.classList.remove("show");
+        renderScenario();
+
+    }, 1700);
+}
+
+
+/* ==========================================================
+   RENDER SCENARIO
+   ========================================================== */
 
 function renderScenario() {
 
     const scenario = scenarios[currentScenario];
-    const game = document.getElementById("game");
 
-    document.getElementById("progressText").textContent =
-        `Decision ${currentScenario + 1} of ${scenarios.length}`;
+    document.getElementById("locationLabel").textContent =
+        scenario.location;
 
-    document.getElementById("progressFill").style.width =
-        `${((currentScenario) / scenarios.length) * 100}%`;
+    document.getElementById("timeLabel").textContent =
+        scenario.time;
 
-    game.innerHTML = `
-        <div class="scenario">
+    document.getElementById("scenarioTitle").textContent =
+        scenario.title;
 
-            <div class="time-label">${scenario.time}</div>
+    document.getElementById("scenarioText").textContent =
+        scenario.text;
 
-            <h2>${scenario.title}</h2>
+    const choices = document.getElementById("choices");
 
-            <p>${scenario.text}</p>
+    choices.innerHTML = "";
 
-        </div>
+    scenario.choices.forEach((choice, index) => {
 
-        <div class="choices">
+        const card = document.createElement("div");
 
-            <div class="choice" onclick="choose(0)">
-                <div class="choice-letter">A</div>
-                <h3>${scenario.choices[0].title}</h3>
-                <p>${scenario.choices[0].text}</p>
+        card.className = "choice";
+
+        card.innerHTML = `
+            <div class="choice-letter">
+                ${String.fromCharCode(65 + index)}
             </div>
 
-            <div class="choice" onclick="choose(1)">
-                <div class="choice-letter">B</div>
-                <h3>${scenario.choices[1].title}</h3>
-                <p>${scenario.choices[1].text}</p>
-            </div>
+            <h3>${choice.title}</h3>
 
-        </div>
+            <p>${choice.text}</p>
+        `;
 
-        <div class="result" id="result"></div>
-    `;
+        card.onclick = () => selectChoice(index);
+
+        choices.appendChild(card);
+    });
+
+    document.getElementById("outcome").classList.remove("show");
+    document.getElementById("outcome").innerHTML = "";
+
+    document.getElementById("scenarioCard").classList.add("show");
+    choices.classList.add("show");
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 }
 
-function choose(choiceIndex) {
+
+/* ==========================================================
+   SELECT CHOICE
+   ========================================================== */
+
+function selectChoice(index) {
 
     const scenario = scenarios[currentScenario];
-    const choice = scenario.choices[choiceIndex];
+    const choice = scenario.choices[index];
 
-    totalScore += choice.score;
+    score += choice.score;
 
-    choicesMade.push({
-        scenario: scenario.title,
+    answers.push({
+        title: scenario.title,
         choice: choice.title,
         score: choice.score
     });
 
     document.querySelectorAll(".choice").forEach(card => {
-        card.style.pointerEvents = "none";
-        card.style.opacity = ".55";
+        card.classList.add("disabled");
     });
 
-    const result = document.getElementById("result");
+    const outcome = document.getElementById("outcome");
 
-    result.innerHTML = `
+    outcome.innerHTML = `
         <h3>What happens next?</h3>
 
-        <p>${choice.result}</p>
+        <p>${choice.outcome}</p>
 
-        <button class="continue-btn" onclick="nextScenario()">
+        <button
+            class="continue-button"
+            onclick="continueSimulation()">
             Continue
         </button>
     `;
 
-    result.style.display = "block";
-    result.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest"
-    });
+    outcome.classList.add("show");
+
+    setTimeout(() => {
+
+        outcome.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest"
+        });
+
+    }, 100);
 }
 
-function nextScenario() {
+
+/* ==========================================================
+   CONTINUE
+   ========================================================== */
+
+function continueSimulation() {
 
     currentScenario++;
 
-    if (currentScenario < scenarios.length) {
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-
-        setTimeout(renderScenario, 200);
-
-    } else {
-
+    if (currentScenario >= scenarios.length) {
         showEnding();
-
+        return;
     }
+
+    showLocationTransition();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 }
+
+
+/* ==========================================================
+   PROGRESS
+   ========================================================== */
+
+function updateProgress() {
+
+    const number = Math.min(currentScenario + 1, scenarios.length);
+
+    document.getElementById("progressText").textContent =
+        `Decision ${number} of ${scenarios.length}`;
+
+    document.getElementById("progressFill").style.width =
+        `${(currentScenario / scenarios.length) * 100}%`;
+}
+
+
+/* ==========================================================
+   ENDING
+   ========================================================== */
 
 function showEnding() {
 
-    document.getElementById("progressText").textContent = "Your Day Is Complete";
-    document.getElementById("progressFill").style.width = "100%";
+    document.getElementById("locationTransition").classList.remove("show");
+    document.getElementById("scenarioCard").classList.remove("show");
 
-    const game = document.getElementById("game");
+    document.getElementById("progressText").textContent =
+        "Workday Complete";
 
-    let title;
-    let message;
-    let badge;
+    document.getElementById("progressFill").style.width =
+        "100%";
+
+    const ending = document.getElementById("ending");
 
     /*
-        Maximum score = 17
+        Max possible score = 25
 
-        14–17 = Excellent
-        10–13 = Solid
-        6–9   = Needs consistency
-        0–5   = Probation concern
+        21–25 Excellent
+        16–20 Successful
+        10–15 Extended evaluation
+        0–9  Not retained
     */
 
-    if (totalScore >= 14) {
+    let badge;
+    let title;
+    let message;
+
+    if (score >= 21) {
 
         badge = "★";
-        title = "Your Work Is Getting Noticed";
+
+        title = "Your Hard Work Is Being Noticed";
 
         message = `
-            Over your first few weeks, you've shown that you can be trusted to think
-            through situations instead of simply waiting for someone to tell you what
-            to do. You work safely, communicate well, and take responsibility for
-            the quality of your work.
+            Over the last several weeks, you've shown more than the ability
+            to complete automotive work. You've demonstrated judgment,
+            professionalism, responsibility, and the ability to work as part
+            of a team.
             <br><br>
-            At the end of your 30-day probationary period, the shop offers you the
-            position permanently. The offer includes a pay increase.
+            When your 30-day probationary period ends, your supervisor calls
+            you into the office.
             <br><br>
-            Your supervisor also tells you that if you continue working this way,
-            you'll be selected for additional manufacturer and industry training
-            that can lead to advanced certifications and greater responsibility.
+            <strong>They're offering you the position permanently.</strong>
+            The permanent position also includes an increase in pay.
+            <br><br>
+            Your supervisor tells you something else: if you continue working
+            this way, you'll be selected for additional advanced training.
+            Those opportunities can lead to more certifications, greater
+            responsibility, and eventually higher-level work in the shop.
         `;
 
     }
 
-    else if (totalScore >= 10) {
+    else if (score >= 16) {
 
         badge = "✓";
+
         title = "You've Earned the Position";
 
         message = `
-            Your first month hasn't been perfect, but you've shown that you're dependable
-            and capable of learning from experience. Your supervisor has seen enough
-            to believe you're worth developing.
+            Your first month hasn't been perfect, but your supervisor has seen
+            enough consistency to believe you're someone worth developing.
             <br><br>
-            You successfully complete your probationary period and are offered the
-            permanent position with the normal increase in pay.
+            You successfully complete your 30-day probationary period and are
+            offered the permanent position, including the normal increase in pay.
             <br><br>
-            Your next challenge is becoming more consistent in the small decisions
-            that separate someone who completes work from someone the shop can
-            fully depend on.
+            Your next step is becoming more consistent in the small decisions
+            that separate someone who can perform the work from someone the
+            entire shop can depend on.
         `;
 
     }
 
-    else if (totalScore >= 6) {
+    else if (score >= 10) {
 
         badge = "!";
-        title = "You're Still Being Evaluated";
+
+        title = "Your Evaluation Isn't Over Yet";
 
         message = `
-            You've shown that you can perform the work, but your supervisor has noticed
-            some inconsistency in the way you handle responsibility, communication,
-            and quality control.
+            You've demonstrated that you can perform many parts of the job,
+            but your supervisor has also noticed inconsistent judgment,
+            communication, or work habits.
             <br><br>
-            Instead of immediately offering you the permanent position, the shop extends
-            your evaluation period. You're given another opportunity to prove that
-            you can make good decisions consistently without constant supervision.
+            Rather than immediately offering you the permanent position,
+            the shop extends your evaluation period.
+            <br><br>
+            You're being given another opportunity to demonstrate that you
+            can make dependable decisions without needing constant supervision.
         `;
 
     }
@@ -767,65 +1248,92 @@ function showEnding() {
     else {
 
         badge = "×";
-        title = "Your Probationary Period Ends";
+
+        title = "The Shop Makes a Decision";
 
         message = `
-            Individually, many of your decisions may have seemed small. Together,
-            however, they've created concerns about reliability, judgment, and whether
-            the shop can trust you to work independently.
+            No single decision ended your opportunity.
             <br><br>
-            At the end of the probationary period, the shop decides not to offer you
-            the permanent position.
+            The concern is the pattern created by the small decisions made
+            throughout the workday. Your supervisor isn't confident yet that
+            the shop can depend on you to work independently.
             <br><br>
-            The issue wasn't one single mistake. It was the pattern created by the
-            decisions you made throughout the workday.
+            At the end of the probationary period, the shop decides not to
+            offer you the permanent position.
         `;
     }
 
-    game.innerHTML = `
-        <div class="ending">
+    ending.innerHTML = `
 
-            <div class="ending-badge">${badge}</div>
+        <div class="ending-badge">${badge}</div>
 
-            <h2>${title}</h2>
+        <h2>${title}</h2>
 
-            <p>${message}</p>
+        <p>${message}</p>
 
-            <div class="reflection">
-                <strong>Think about it:</strong><br><br>
-                Which decision was the hardest for you to make?
-                Was there a choice where both options seemed reasonable?
-                What information ultimately influenced your decision?
-            </div>
+        <div class="reflection">
 
-            <button class="restart-btn" onclick="restartGame()">
-                Start Over
-            </button>
+            <h3>Before You Finish</h3>
+
+            <p>
+                Think back through the day.
+                Which decision was the hardest to make?
+            </p>
+
+            <p>
+                Was there a situation where both options seemed reasonable?
+            </p>
+
+            <p>
+                Which decision do you think could have created the
+                biggest consequence if you were wrong?
+            </p>
+
+            <p>
+                In a real workplace, what matters more:
+                one major decision or the pattern created by many small ones?
+            </p>
 
         </div>
+
+        <button
+            class="restart-button"
+            onclick="restartSimulation()">
+            Start Over
+        </button>
     `;
 
+    ending.classList.add("show");
+
     window.scrollTo({
         top: 0,
         behavior: "smooth"
     });
 }
 
-function restartGame() {
+
+/* ==========================================================
+   RESTART
+   ========================================================== */
+
+function restartSimulation() {
 
     currentScenario = 0;
-    totalScore = 0;
-    choicesMade = [];
+    score = 0;
+    answers = [];
 
-    renderScenario();
+    document.getElementById("ending").classList.remove("show");
+
+    document.getElementById("gameHeader").style.display = "none";
+    document.getElementById("intro").style.display = "block";
+
+    document.getElementById("progressFill").style.width = "0%";
 
     window.scrollTo({
         top: 0,
         behavior: "smooth"
     });
 }
-
-renderScenario();
 
 </script>
 

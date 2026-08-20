@@ -434,8 +434,8 @@
     .scenario-visual, .review-visual {
         position: relative;
         z-index: 2;
-        width: min(92%, 1060px);
-        margin: 14px auto 18px;
+        width: min(68%, 760px);
+        margin: 12px auto 16px;
         border-radius: 16px;
         overflow: hidden;
         background: var(--navy-900);
@@ -445,8 +445,9 @@
     .scenario-visual img, .review-visual img {
         display: block;
         width: 100%;
-        height: 350px;
-        object-fit: cover;
+        height: auto;
+        object-fit: contain;
+        cursor: zoom-in;
     }
     .scenario-image-caption, .review-image-caption {
         padding: 9px 13px 10px;
@@ -461,10 +462,56 @@
     @media (max-width: 760px) {
         .scenario-visual, .review-visual {
             width: 100%;
-            margin: 14px 0 18px;
+            margin: 12px 0 16px;
             border-radius: 12px;
         }
-        .scenario-visual img, .review-visual img { height: 260px; }
+        .scenario-visual img, .review-visual img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+    }
+
+
+    .scene-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: rgba(3,12,18,.92);
+    }
+
+    .scene-modal.open {
+        display: flex;
+    }
+
+    .scene-modal img {
+        display: block;
+        max-width: min(94vw, 1400px);
+        max-height: 90vh;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        border-radius: 14px;
+        box-shadow: 0 24px 70px rgba(0,0,0,.55);
+    }
+
+    .scene-modal button {
+        position: absolute;
+        top: 18px;
+        right: 22px;
+        width: 46px;
+        height: 46px;
+        border: 0;
+        border-radius: 50%;
+        background: var(--gold);
+        color: var(--navy-950);
+        font-size: 1.5rem;
+        font-weight: 900;
+        cursor: pointer;
     }
 
     @media (min-width: 980px) {
@@ -544,6 +591,11 @@
 
     <main id="screen"></main>
 
+</div>
+
+<div class="scene-modal" id="sceneModal" onclick="closeSceneImage(event)">
+    <button type="button" aria-label="Close enlarged scene" onclick="closeSceneImage(event)">×</button>
+    <img id="sceneModalImage" src="" alt="">
 </div>
 
 <script>
@@ -1147,7 +1199,7 @@ function fitViewport() {
         let scale = Math.min(1, availableHeight / contentHeight);
 
         // Keep text comfortably readable even on shorter screens.
-        scale = Math.max(0.72, scale);
+        scale = Math.max(0.66, scale);
 
         document.documentElement.style.setProperty(
             "--ui-scale",
@@ -1168,6 +1220,31 @@ screenObserver.observe(document.getElementById("screen"), {
 window.addEventListener("resize", fitViewport);
 
 
+
+function openSceneImage(img) {
+    const modal = document.getElementById("sceneModal");
+    const modalImg = document.getElementById("sceneModalImage");
+    modalImg.src = img.src;
+    modalImg.alt = img.alt;
+    modal.classList.add("open");
+}
+
+function closeSceneImage(event) {
+    if (event) {
+        const modalImg = document.getElementById("sceneModalImage");
+        if (event.target === modalImg) return;
+        event.stopPropagation();
+    }
+    document.getElementById("sceneModal").classList.remove("open");
+}
+
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+        document.getElementById("sceneModal").classList.remove("open");
+    }
+});
+
+
 function imageFallback(img) {
     const visual = img.closest(".scenario-visual, .review-visual");
     if (visual) visual.style.display = "none";
@@ -1179,6 +1256,7 @@ function scenarioVisual(s, number) {
             <img src="${s.image}"
                  alt="Scenario ${number}: ${s.title}"
                  loading="eager"
+                 onclick="openSceneImage(this)"
                  onload="fitViewport()" onerror="imageFallback(this)">
             <div class="scenario-image-caption">Scenario ${number} • ${s.title}</div>
         </div>
@@ -1191,6 +1269,7 @@ function reviewVisual(filename, caption) {
             <img src="${filename}"
                  alt="${caption}"
                  loading="eager"
+                 onclick="openSceneImage(this)"
                  onload="fitViewport()" onerror="imageFallback(this)">
             <div class="review-image-caption">${caption}</div>
         </div>

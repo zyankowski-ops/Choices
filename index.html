@@ -311,7 +311,7 @@ const scenarios = [
     text: `
         <p>Your shift starts at <strong>8:00 AM</strong>.</p>
 
-        <p>You arrive at the shop, walk inside, and see several technicians already getting ready for the day.</p>
+        <p>You arrive at the shop a few minutes early. You've always heard that <strong>being early for work is a good thing</strong>, and you want to make a good impression as the new technician.</p>
 
         <p>Your toolbox is across the shop, and you still need to put your belongings away and get yourself ready to work.</p>
 
@@ -319,13 +319,13 @@ const scenarios = [
     `,
     choices: [
         {
-            title: "Clock in when you arrive.",
-            text: "You're already at work before 8:00. Clock in now, then put your belongings away and get yourself ready for the shift.",
+            title: "Clock in early.",
+            text: "Being early shows initiative. Punch in now, then put your belongings away and get yourself ready before the shift officially starts.",
             professional: false
         },
         {
-            title: "Clock in when you're ready.",
-            text: "Put your belongings away, get yourself completely ready to work, then clock in just before starting your shift.",
+            title: "Get ready, then clock in.",
+            text: "Use the few early minutes to put your things away and get completely ready, then punch in when you're prepared to begin working.",
             professional: true
         }
     ]
@@ -471,7 +471,7 @@ const scenarios = [
     text: `
         <p>You clocked out for your scheduled <strong>30-minute lunch at 12:00 PM</strong>.</p>
 
-        <p>You're out with a few coworkers and nobody has been paying much attention to the time.</p>
+        <p>You're out with a few of the technicians you've been trying to get to know. They seem pretty relaxed about lunch and nobody has been watching the time closely.</p>
 
         <p>You look at your phone.</p>
 
@@ -479,49 +479,49 @@ const scenarios = [
             <strong>It's 12:28 PM.</strong>
         </div>
 
-        <p>You're still a few minutes away from the shop, so there's no way you'll be back and ready to work by 12:30.</p>
+        <p>You're still a few minutes away from the shop. One of the guys shrugs and says, <strong>“We're always a couple minutes late. Nobody cares.”</strong></p>
+
+        <p>You're the new tech. You don't want to act like the rule enforcer, rush everyone, or make yourself the guy who can't just go along with the group.</p>
     `,
     choices: [
         {
-            title: "Wrap up and then head back.",
-            text: "You're already going to be a few minutes late either way. Finish the conversation and head back without making a big deal out of a short delay.",
+            title: "Stay with the group.",
+            text: "They're the experienced guys and this seems normal here. Don't disrupt everyone's lunch over a couple of minutes—head back when they do.",
             professional: false
         },
         {
-            title: "Head back immediately.",
-            text: "End the conversation now and start back to the shop, even though you're unlikely to make it by exactly 12:30.",
+            title: "Head back on your own.",
+            text: "Tell them you'll catch up with them at the shop and start heading back. You're new, and you'd rather not make being late part of your reputation.",
             professional: true
         }
     ]
 },
 
 {
-    title: "Where's My Tool?",
+    title: "Shop Banter",
     time: "1:15 PM",
     text: `
-        <p>You go to grab your <strong>10mm socket</strong> and it's missing.</p>
+        <p>You're still building your tool collection, so you've had to borrow a few things from the technicians around you. One of the more experienced techs has told you before that you can borrow from his cart as long as you put things back.</p>
 
-        <p>After looking around, you spot it on the cart of the technician in the bay next to you.</p>
-
-        <p>This isn't the first time they've borrowed one of your tools without asking.</p>
-
-        <p>When you say something, they respond:</p>
+        <p>You walk over to return his <strong>10mm socket</strong>. As you set it down, he looks at the other guys and says:</p>
 
         <div class="quote">
-            “Relax. I was going to put it back. It's just a socket.”
+            “Look at this guy. Three weeks in and he's already building his toolbox out of mine.”
         </div>
 
-        <p>You've talked to them about this before.</p>
+        <p>A couple of technicians laugh. Then he looks at you and adds, <strong>“I'm gonna have to start charging you rent.”</strong></p>
+
+        <p>Shop banter is common, and you've joked around with these guys before. But you're also the new tech, everyone is laughing at you, and you're not completely sure whether he's messing with you or actually irritated that you've been borrowing his tools.</p>
     `,
     choices: [
         {
-            title: "Address it directly.",
-            text: "Tell them this keeps happening, you're tired of chasing down your own tools, and they need to stop taking them without asking.",
+            title: "Fire back.",
+            text: "If they're going to give you a hard time, don't just stand there and take it. Tell him he offered to let you borrow the tools and throw something back at him so everyone knows you can stick up for yourself.",
             professional: false
         },
         {
-            title: "Set the boundary and move on.",
-            text: "Tell them clearly that you need them to ask before borrowing your tools, take your socket back, and return to work.",
+            title: "Check the boundary.",
+            text: "Keep it calm and say, ‘If you're messing with me, we're good—but if you actually don't want me borrowing your stuff, just tell me.’ Give him a chance to make the line clear without turning it into a confrontation.",
             professional: true
         }
     ]
@@ -776,18 +776,18 @@ const consequences = [
 
 {
     bad: `
-        <h2>The Argument Gets Reported</h2>
-        <p>Your manager agrees that another technician should not be taking your tools without permission.</p>
-        <p>Then they tell you:</p>
-        <div class="quote">“But that's not what we're talking about right now. We're talking about how you handled it.”</div>
-        <p>You were right about the original problem.</p>
-        <p><strong>You created another problem with the way you handled it.</strong></p>
+        <h2>The Joke Stops Being Funny</h2>
+        <p>You fire back harder than the technician expected. He immediately tells you he was only messing with you.</p>
+        <p>What started as normal shop banter turns into an argument in front of the rest of the shop.</p>
+        <p>Later, your manager tells you that you're allowed to speak up when something bothers you—but you also have to learn how to read the situation and handle conflict without escalating it.</p>
+        <p><strong>Standing up for yourself wasn't the problem. How quickly the situation escalated was.</strong></p>
     `,
     good: `
-        <h2>The Next Time...</h2>
-        <p>The technician walks over to your toolbox.</p>
-        <div class="quote">“Hey, can I borrow your 10mm?”</div>
-        <p>The problem was addressed without turning it into a bigger conflict.</p>
+        <h2>You Find the Line</h2>
+        <p>The technician laughs and tells you he was giving you a hard time.</p>
+        <div class="quote">“Nah, you're good. Just put my stuff back when you're done.”</div>
+        <p>You laugh it off and return to work knowing where the boundary actually is.</p>
+        <p><strong>You didn't have to accept being uncomfortable, and you didn't have to turn the moment into a fight to address it.</strong></p>
     `
 },
 

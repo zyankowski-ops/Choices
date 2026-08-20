@@ -617,14 +617,14 @@ const scenarios = [
     `,
     choices: [
         {
-            title: "Clock in early.",
-            text: "Being early shows initiative. Punch in now, then put your belongings away and get yourself ready before the shift officially starts.",
-            professional: false
-        },
-        {
             title: "Get ready, then clock in.",
             text: "Use the few early minutes to put your things away and get completely ready, then punch in when you're prepared to begin working.",
             professional: true
+        },
+        {
+            title: "Clock in early.",
+            text: "Being early shows initiative. Punch in now, then put your belongings away and get yourself ready before the shift officially starts.",
+            professional: false
         }
     ]
 },
@@ -671,14 +671,14 @@ const scenarios = [
     `,
     choices: [
         {
-            title: "Use what you have and keep moving.",
-            text: "Put in your AirPods to cut down the noise and keep working so you don't lose more time on the already-tight promise time.",
-            professional: false
-        },
-        {
             title: "Stop and get the shop PPE.",
             text: "Walk to parts for proper hearing protection, even though it costs you a few more minutes on a job that's already close to its promise time.",
             professional: true
+        },
+        {
+            title: "Use what you have and keep moving.",
+            text: "Put in your AirPods to cut down the noise and keep working so you don't lose more time on the already-tight promise time.",
+            professional: false
         }
     ]
 },
@@ -756,14 +756,14 @@ const scenarios = [
     `,
     choices: [
         {
-            title: "Correct it and document what happened.",
-            text: "Reconnect the hose and tell the service advisor and manager that the previous service caused the problem so the customer isn't charged.",
-            professional: true
-        },
-        {
             title: "Correct the hose and handle the light as a service concern.",
             text: "Reconnect the hose, clear the code, and recommend a throttle body service based on the vehicle's condition instead of bringing up the previous mistake.",
             professional: false
+        },
+        {
+            title: "Correct it and document what happened.",
+            text: "Reconnect the hose and tell the service advisor and manager that the previous service caused the problem so the customer isn't charged.",
+            professional: true
         }
     ]
 },
@@ -789,14 +789,14 @@ const scenarios = [
     `,
     choices: [
         {
-            title: "Stay with the group.",
-            text: "They're the experienced guys and this seems normal here. Don't disrupt everyone's lunch over a couple of minutes—head back when they do.",
-            professional: false
-        },
-        {
             title: "Head back on your own.",
             text: "Tell them you'll catch up with them at the shop and start heading back. You're new, and you'd rather not make being late part of your reputation.",
             professional: true
+        },
+        {
+            title: "Stay with the group.",
+            text: "They're the experienced guys and this seems normal here. Don't disrupt everyone's lunch over a couple of minutes—head back when they do.",
+            professional: false
         }
     ]
 },
@@ -851,14 +851,14 @@ const scenarios = [
     `,
     choices: [
         {
-            title: "Explain your side right away.",
-            text: "Tell your manager that you remember the clips being damaged before you worked on the vehicle and that you don't believe you caused the problem.",
-            professional: false
-        },
-        {
             title: "Let them finish, then add context.",
             text: "Hear your manager out first. Then explain what you observed and acknowledge that the damaged clips should have been documented.",
             professional: true
+        },
+        {
+            title: "Explain your side right away.",
+            text: "Tell your manager that you remember the clips being damaged before you worked on the vehicle and that you don't believe you caused the problem.",
+            professional: false
         }
     ]
 },
@@ -884,14 +884,14 @@ const scenarios = [
     `,
     choices: [
         {
-            title: "Draw a firm line.",
-            text: "Explain that a code read is not a diagnosis, that your testing is what they're paying for, and that they can choose the parts-store recommendation instead if they trust it more.",
-            professional: false
-        },
-        {
             title: "Walk them through your testing.",
             text: "Explain what the code means, what tests you performed, what the results showed, and how those results led to the repair you're recommending.",
             professional: true
+        },
+        {
+            title: "Draw a firm line.",
+            text: "Explain that a code read is not a diagnosis, that your testing is what they're paying for, and that they can choose the parts-store recommendation instead if they trust it more.",
+            professional: false
         }
     ]
 },
@@ -954,16 +954,16 @@ const scenarios = [
     `,
     choices: [
         {
-            title: "Leave at your scheduled time.",
-            text: "Tell the advisor you already have plans at 5:30 and can't stay tonight. Finish wrapping up and leave when your shift ends.",
-            professional: true,
-            exceptional: false
-        },
-        {
             title: "Stay for the battery job.",
             text: "Let your date know you're going to be late and stay another 20–30 minutes to get the stranded customer back on the road.",
             professional: true,
             exceptional: true
+        },
+        {
+            title: "Leave at your scheduled time.",
+            text: "Tell the advisor you already have plans at 5:30 and can't stay tonight. Finish wrapping up and leave when your shift ends.",
+            professional: true,
+            exceptional: false
         }
     ]
 }
@@ -1460,7 +1460,7 @@ function showConsequence() {
     let content;
 
     if (consequenceIndex === 11) {
-        content = answer === 1 ? result.exceptional : result.normal;
+        content = answer === 0 ? result.exceptional : result.normal;
     } else {
         const selectedChoice = scenario.choices[answer];
         content = selectedChoice.professional ? result.good : result.bad;
@@ -1556,7 +1556,7 @@ function showReview() {
     }
 
     const integrityFailure =
-        answers[5] === 1;
+        answers[5] === 0;
 
     const wheelFailure =
         answers[3] === 0;
@@ -1565,7 +1565,7 @@ function showReview() {
         professionalCount === 12;
 
     const exceptional =
-        answers[11] === 1;
+        answers[11] === 0;
 
     let title;
     let body;
